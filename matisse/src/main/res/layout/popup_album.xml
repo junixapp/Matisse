@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:elevation="10dp"
+    app:cardBackgroundColor="#fff"
+    android:layout_width="210dp"
+    android:layout_height="350dp">
+
+    <ListView
+        android:id="@+id/listView"
+        android:divider="#DEDEDE"
+        android:dividerHeight="1px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</android.support.v7.widget.CardView>
