@@ -70,3 +70,8 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 ```pro
 -dontwarn com.bumptech.glide.**
 ```
+
+## TODO
+- 集成照片剪切功能
+- 权限封装
+- 继承拍照/录制视频的功能

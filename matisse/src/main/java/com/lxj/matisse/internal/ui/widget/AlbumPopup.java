@@ -1,16 +1,13 @@
 package com.lxj.matisse.internal.ui.widget;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.lxj.matisse.MatisseUtil;
 import com.lxj.matisse.R;
+import com.lxj.matisse.internal.utils.UIUtils;
 import com.lxj.xpopup.impl.PartShadowPopupView;
 
 /**
@@ -50,6 +47,6 @@ public class AlbumPopup extends PartShadowPopupView {
 
     @Override
     protected int getMaxHeight() {
-        return MatisseUtil.dp2px(getContext(), 350);
+        return UIUtils.dp2px(getContext(), 350);
     }
 }

@@ -364,4 +364,14 @@ public final class SelectionCreator {
         }
     }
 
+    /**
+     * 是否裁剪，只有选择一张图片时才有用
+     *
+     * @param isCrop
+     * @return {@link SelectionCreator} for fluent API.
+     */
+    public SelectionCreator isCrop(boolean isCrop) {
+        mSelectionSpec.isCrop = isCrop;
+        return this;
+    }
 }

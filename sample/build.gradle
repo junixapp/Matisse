@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
 
     defaultConfig {
-        applicationId 'com.zhihu.matisse.sample'
+        applicationId 'com.lxj.matisse.sample'
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1

@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -28,6 +29,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
@@ -38,6 +40,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lxj.matisse.R;
 import com.lxj.matisse.internal.entity.Album;
@@ -58,7 +61,10 @@ import com.lxj.matisse.internal.utils.MediaStoreCompat;
 import com.lxj.matisse.internal.utils.PathUtils;
 import com.lxj.matisse.internal.utils.PhotoMetadataUtils;
 import com.lxj.xpopup.XPopup;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -203,6 +209,12 @@ public class MatisseActivity extends AppCompatActivity implements
             int collectionType = resultBundle.getInt(SelectedItemCollection.STATE_COLLECTION_TYPE,
                     SelectedItemCollection.COLLECTION_UNDEFINED);
             if (data.getBooleanExtra(BasePreviewActivity.EXTRA_RESULT_APPLY, false)) {
+                if(mSpec.isCrop && selected.size()==1 && selected.get(0).isImage()){
+                    //start crop
+                    startCrop(selected.get(0).uri);
+                    return;
+                }
+
                 Intent result = new Intent();
                 ArrayList<Uri> selectedUris = new ArrayList<>();
                 ArrayList<String> selectedPaths = new ArrayList<>();
@@ -242,6 +254,25 @@ public class MatisseActivity extends AppCompatActivity implements
                 MatisseActivity.this.revokeUriPermission(contentUri,
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             finish();
+        }else if (requestCode == UCrop.REQUEST_CROP) {
+            final Uri resultUri = UCrop.getOutput(data);
+            if (resultUri != null) {
+                //finish with result.
+                Intent result = new Intent();
+                ArrayList<Uri> selectedUris = new ArrayList<>();
+                selectedUris.add(resultUri);
+                result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
+                ArrayList<String> selectedPaths = new ArrayList<>();
+                selectedPaths.add(resultUri.getPath());
+                result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths);
+                result.putExtra(EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
+                setResult(RESULT_OK, result);
+                finish();
+            } else {
+                Log.e("Matisse", "ucrop crop occur error: "+UCrop.getError(data).toString());
+            }
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            Log.e("Matisse", "ucrop crop occur error: "+UCrop.getError(data).toString());
         }
     }
 
@@ -320,8 +351,13 @@ public class MatisseActivity extends AppCompatActivity implements
             ArrayList<String> selectedPaths = (ArrayList<String>) mSelectedCollection.asListOfString();
             result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths);
             result.putExtra(EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
-            setResult(RESULT_OK, result);
-            finish();
+            if(mSpec.isCrop && selectedPaths.size()==1 && mSelectedCollection.asList().get(0).isImage()){
+                //start crop
+                startCrop(selectedUris.get(0));
+            }else {
+                setResult(RESULT_OK, result);
+                finish();
+            }
         } else if (v.getId() == R.id.originalLayout) {
             int count = countOverMaxSize();
             if (count > 0) {
@@ -344,6 +380,26 @@ public class MatisseActivity extends AppCompatActivity implements
         }
     }
 
+    public void startCrop(Uri source){
+        String destinationFileName = System.nanoTime()+"matisse_crop_temp.jpg";
+        UCrop.Options options = new UCrop.Options();
+        options.setCompressionQuality(90);
+        // Color palette
+        TypedArray ta = getTheme().obtainStyledAttributes(
+                new int[]{R.attr.colorPrimary,
+                        R.attr.colorPrimaryDark});
+        int primaryColor = ta.getColor(0, Color.TRANSPARENT);
+        options.setToolbarColor(primaryColor);
+        options.setStatusBarColor(ta.getColor(1, Color.TRANSPARENT));
+        options.setActiveWidgetColor(primaryColor);
+        ta.recycle();
+        File cacheFile = new File(getCacheDir(), destinationFileName);
+        UCrop.of(source, Uri.fromFile(cacheFile))
+                .withAspectRatio(1, 1)
+                .withOptions(options)
+                .start(this);
+    }
+    //相册条目点击
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
         albumPopup.dismiss();

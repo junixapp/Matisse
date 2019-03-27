@@ -49,4 +49,9 @@
         android:textSize="16sp"
         tools:text="/storage/emulated/0/Pictures/JPEG_20170516_12345.jpg"
         tools:textColor="@android:color/black" />
+    <ImageView
+        android:layout_marginLeft="20dp"
+        android:id="@+id/image"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
 </LinearLayout>

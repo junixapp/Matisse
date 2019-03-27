@@ -24,13 +24,16 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.lxj.matisse.Matisse;
 import com.lxj.matisse.MimeType;
@@ -40,6 +43,7 @@ import com.lxj.matisse.internal.entity.CaptureStrategy;
 import com.lxj.matisse.listener.OnCheckedListener;
 import com.lxj.matisse.listener.OnSelectedListener;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -90,8 +94,6 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
 //                                                    getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                                             .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                                             .thumbnailScale(0.85f)
-//                                            .imageEngine(new GlideEngine())  // for glide-V3
-//                                            .imageEngine(new Glide4Engine())    // for glide-V4
                                             .setOnSelectedListener(new OnSelectedListener() {
                                                 @Override
                                                 public void onSelected(
@@ -104,6 +106,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .originalEnable(true)
                                             .maxOriginalSize(10)
                                             .autoHideToolbarOnSingleTap(true)
+                                            .isCrop(true)
                                             .setOnCheckedListener(new OnCheckedListener() {
                                                 @Override
                                                 public void onCheck(boolean isChecked) {
@@ -123,6 +126,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .originalEnable(true)
                                             .maxOriginalSize(10)
                                             .imageEngine(new PicassoEngine())
+                                            .isCrop(true)
                                             .forResult(REQUEST_CODE_CHOOSE);
                                     break;
                                 default:
@@ -152,7 +156,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             mAdapter.setData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
-            Log.e("OnActivityResult ", String.valueOf(Matisse.obtainOriginalState(data)));
+            Log.e("OnActivityResult", "originalState: "+String.valueOf(Matisse.obtainOriginalState(data)));
         }
     }
 
@@ -176,10 +180,12 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         public void onBindViewHolder(UriViewHolder holder, int position) {
             holder.mUri.setText(mUris.get(position).toString());
-            holder.mPath.setText(mPaths.get(position));
+            String sz = Formatter.formatFileSize(holder.itemView.getContext(), new File(mPaths.get(position)).length());
+            holder.mPath.setText(mPaths.get(position) + " \n 大小："+sz);
 
             holder.mUri.setAlpha(position % 2 == 0 ? 1.0f : 0.54f);
             holder.mPath.setAlpha(position % 2 == 0 ? 1.0f : 0.54f);
+            Glide.with(holder.image).load(mUris.get(position)).into(holder.image);
         }
 
         @Override
@@ -191,11 +197,13 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
 
             private TextView mUri;
             private TextView mPath;
+            private ImageView image;
 
             UriViewHolder(View contentView) {
                 super(contentView);
                 mUri = (TextView) contentView.findViewById(R.id.uri);
                 mPath = (TextView) contentView.findViewById(R.id.path);
+                image =  contentView.findViewById(R.id.image);
             }
         }
     }
