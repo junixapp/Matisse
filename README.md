@@ -8,8 +8,9 @@
 
 
 ## 使用
+![Download](https://api.bintray.com/packages/li-xiaojun/jrepo/matisse/images/download.svg)
 ```groovy
-implementation 'com.lxj:matisse:0.0.1'
+implementation 'com.lxj:matisse:最新版本'
 ```
 
 ## 如何使用
