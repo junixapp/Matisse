@@ -36,7 +36,7 @@ publish {
     userOrg = 'li-xiaojun'
     groupId = 'com.lxj'
     artifactId = 'matisse'
-    publishVersion = '0.0.1'
+    publishVersion = '0.0.2'
     repoName = 'jrepo'
     desc = '图片，视频选择和裁剪库，知乎Matisse的增强版。'
     website = 'https://github.com/li-xiaojun/Matisse'

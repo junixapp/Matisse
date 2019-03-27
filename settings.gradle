@@ -1,1 +1,1 @@
-include ':sample', ':matisse', ':ucrop'
+include ':sample', ':matisse'

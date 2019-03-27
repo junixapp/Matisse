@@ -269,10 +269,10 @@ public class MatisseActivity extends AppCompatActivity implements
                 setResult(RESULT_OK, result);
                 finish();
             } else {
-                Log.e("Matisse", "ucrop crop occur error: "+UCrop.getError(data).toString());
+                Log.e("Matisse", "ucrop occur error: "+UCrop.getError(data).toString());
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
-            Log.e("Matisse", "ucrop crop occur error: "+UCrop.getError(data).toString());
+            Log.e("Matisse", "ucrop occur error: "+UCrop.getError(data).toString());
         }
     }
 
@@ -381,7 +381,7 @@ public class MatisseActivity extends AppCompatActivity implements
     }
 
     public void startCrop(Uri source){
-        String destinationFileName = System.nanoTime()+"matisse_crop_temp.jpg";
+        String destinationFileName = System.nanoTime()+"_matisse_crop.jpg";
         UCrop.Options options = new UCrop.Options();
         options.setCompressionQuality(90);
         // Color palette

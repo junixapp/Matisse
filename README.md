@@ -5,6 +5,7 @@
 
 # 预览
 ![Image](/screenshot/1.gif)
+![Image](/screenshot/2.gif)
 
 
 ## 使用
@@ -34,6 +35,7 @@ Matisse.from(MainActivity.this)
         .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
         .thumbnailScale(0.85f)
+        .isCrop(true)//开启裁剪，只有选择单张图片才能裁剪
         .imageEngine(new GlideEngine())
         .forResult(REQUEST_CODE_CHOOSE);
 ```
