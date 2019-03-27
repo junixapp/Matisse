@@ -1,7 +1,12 @@
 
-# Matisse
-知乎Matisse的增强版，主要优化了用户体验，增加了功能。
+## Matisse
+知乎Matisse的增强版，主要优化了用户体验，功能上集成了UCrop + CameraView。
 
+
+## 功能
+- 拍摄照片和视频
+- 支持照片裁剪
+- Matisse本身所有功能
 
 # 预览
 ![Image](/screenshot/1.gif)
