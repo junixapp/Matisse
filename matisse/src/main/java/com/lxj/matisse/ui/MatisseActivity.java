@@ -52,8 +52,6 @@ import com.lxj.matisse.internal.ui.SelectedPreviewActivity;
 import com.lxj.matisse.internal.ui.adapter.AlbumMediaAdapter;
 import com.lxj.matisse.internal.ui.adapter.AlbumsAdapter;
 import com.lxj.matisse.internal.ui.widget.AlbumPopup;
-import com.lxj.matisse.internal.ui.widget.AlbumsSpinner;
-import com.lxj.matisse.internal.ui.widget.AlbumsSpinner2;
 import com.lxj.matisse.internal.ui.widget.CheckRadioView;
 import com.lxj.matisse.internal.ui.widget.IncapableDialog;
 import com.lxj.matisse.internal.utils.MediaStoreCompat;
@@ -151,22 +149,8 @@ public class MatisseActivity extends AppCompatActivity implements
         updateBottomToolbar();
 
         mAlbumsAdapter = new AlbumsAdapter(this, null, false);
-        albumPopup = new AlbumPopup(this);
-//        mAlbumsSpinner = new AlbumsSpinner2(this);
-//        mAlbumsSpinner.setOnItemSelectedListener(this);
-//        mAlbumsSpinner.setSelectedTextView((TextView) findViewById(R.id.selected_album));
-//        mAlbumsSpinner.setPopupAnchorView(findViewById(R.id.toolbar));
-//        spinner.setAdapter(mAlbumsAdapter);
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                MatisseActivity.this.onItemSelected(parent, view, position, id);
-//            }
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
+        albumPopup = (AlbumPopup) new XPopup.Builder(this).hasShadowBg(false).atView(toolbar)
+                        .asCustom(new AlbumPopup(this));
         albumPopup.setAdapter(mAlbumsAdapter)
                 .setOnItemClickListener(this);
         mAlbumCollection.onCreate(this, this);
@@ -356,13 +340,13 @@ public class MatisseActivity extends AppCompatActivity implements
             }
         } else if (v.getId() == R.id.selected_album) {
             //选择相册
-            XPopup.get(this).hasShadowBg(false).asCustom(albumPopup).atView(toolbar).show();
+            albumPopup.show();
         }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-        XPopup.get(this).dismiss();
+        albumPopup.dismiss();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -374,7 +358,7 @@ public class MatisseActivity extends AppCompatActivity implements
                 }
                 onAlbumSelected(album);
             }
-        }, XPopup.getAnimationDuration());
+        }, XPopup.getAnimationDuration() - 50);
     }
 
     @Override
@@ -403,7 +387,6 @@ public class MatisseActivity extends AppCompatActivity implements
 
     private void onAlbumSelected(Album album) {
         mSelected.setText(album.getDisplayName(this));
-        Log.e("tag", "name: " + album.getDisplayName(this) +  "   id: "+album.getId());
         mAlbumsAdapter.updateSelection(album.getId());
         if (album.isAll() && album.isEmpty()) {
             mContainer.setVisibility(View.GONE);

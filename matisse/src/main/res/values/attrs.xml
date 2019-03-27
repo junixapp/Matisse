@@ -23,7 +23,8 @@
     <attr name="album.emptyView" format="reference"/>
     <attr name="album.emptyView.textColor" format="reference|color"/>
     <attr name="album.dropdown.selected.bg" format="reference|color"/>
-    <attr name="listPopupWindowStyle" format="reference"/>
+    <attr name="album.dropdown.divider" format="reference|color"/>
+    <attr name="album.popup.bg" format="reference|color"/>
     <attr name="page.bg" format="reference|color"/>
     <attr name="bottomToolbar.bg" format="reference|color"/>
     <attr name="bottomToolbar.preview.textColor" format="reference|color"/>

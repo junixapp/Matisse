@@ -29,6 +29,8 @@
         <item name="album.emptyView">@drawable/ic_empty_zhihu</item>
         <item name="album.emptyView.textColor">@color/zhihu_album_empty_view</item>
         <item name="album.dropdown.selected.bg">@color/zhihu_album_selected_bg</item>
+        <item name="album.dropdown.divider">@color/zhihu_album_divider</item>
+        <item name="album.popup.bg">@color/zhihu_album_popup_bg</item>
         <item name="item.placeholder">@color/zhihu_item_placeholder</item>
         <item name="item.checkCircle.backgroundColor">@color/zhihu_item_checkCircle_backgroundColor</item>
         <item name="item.checkCircle.borderColor">@color/zhihu_item_checkCircle_borderColor</item>
@@ -38,7 +40,6 @@
         <item name="bottomToolbar.apply.textColor">@color/zhihu_bottom_toolbar_apply</item>
         <item name="preview.bottomToolbar.back.textColor">@color/zhihu_preview_bottom_toolbar_back_text</item>
         <item name="preview.bottomToolbar.apply.textColor">@color/zhihu_preview_bottom_toolbar_apply</item>
-        <item name="listPopupWindowStyle">@style/Popup.Zhihu</item>
         <item name="capture.textColor">@color/zhihu_capture</item>
     </style>
 
@@ -46,9 +47,9 @@
 
     </style>
 
-    <style name="Popup.Zhihu" parent="Widget.AppCompat.Light.ListPopupWindow">
-        <item name="android:popupBackground">@color/zhihu_album_popup_bg</item>
-    </style>
+    <!--<style name="Popup.Zhihu" parent="Widget.AppCompat.Light.ListPopupWindow">-->
+        <!--<item name="android:popupBackground">@color/zhihu_album_popup_bg</item>-->
+    <!--</style>-->
 
     //===================================== Theme Dracula ==========================================
 
@@ -63,6 +64,8 @@
         <item name="album.emptyView">@drawable/ic_empty_dracula</item>
         <item name="album.emptyView.textColor">@color/dracula_album_empty_view</item>
         <item name="album.dropdown.selected.bg">@color/dracula_album_selected_bg</item>
+        <item name="album.dropdown.divider">@color/dracula_album_divider</item>
+        <item name="album.popup.bg">@color/dracula_album_popup_bg</item>
         <item name="item.placeholder">@color/dracula_item_placeholder</item>
         <item name="item.checkCircle.backgroundColor">@color/dracula_item_checkCircle_backgroundColor</item>
         <item name="item.checkCircle.borderColor">@color/dracula_item_checkCircle_borderColor</item>
@@ -72,8 +75,6 @@
         <item name="bottomToolbar.apply.textColor">@color/dracula_bottom_toolbar_apply</item>
         <item name="preview.bottomToolbar.back.textColor">@color/dracula_preview_bottom_toolbar_back_text</item>
         <item name="preview.bottomToolbar.apply.textColor">@color/dracula_preview_bottom_toolbar_apply</item>
-        <item name="android:listPopupWindowStyle">@style/Popup.Dracula</item>
-        <item name="listPopupWindowStyle">@style/Popup.Dracula</item>
         <item name="capture.textColor">@color/dracula_capture</item>
     </style>
 
@@ -81,8 +82,8 @@
 
     </style>
 
-    <style name="Popup.Dracula" parent="Widget.AppCompat.ListPopupWindow">
-        <item name="android:popupBackground">@color/dracula_album_popup_bg</item>
-    </style>
+    <!--<style name="Popup.Dracula" parent="Widget.AppCompat.ListPopupWindow">-->
+        <!--<item name="android:popupBackground">@color/dracula_album_popup_bg</item>-->
+    <!--</style>-->
 
 </resources>

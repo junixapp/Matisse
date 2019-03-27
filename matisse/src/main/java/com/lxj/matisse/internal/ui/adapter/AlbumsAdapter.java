@@ -43,20 +43,21 @@ public class AlbumsAdapter extends CursorAdapter {
     public AlbumsAdapter(Context context, Cursor c, boolean autoRequery) {
         super(context, c, autoRequery);
         TypedArray ta = context.getTheme().obtainStyledAttributes(
-                new int[]{R.attr.album_thumbnail_placeholder, R.attr.album_dropdown_selected_bg});
+                new int[]{R.attr.album_thumbnail_placeholder,
+                        R.attr.album_dropdown_selected_bg});
         mPlaceholder = ta.getDrawable(0);
         selectedColor = ta.getColor(1, Color.TRANSPARENT);
         ta.recycle();
     }
 
-    public AlbumsAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
-        TypedArray ta = context.getTheme().obtainStyledAttributes(
-                new int[]{R.attr.album_thumbnail_placeholder});
-        mPlaceholder = ta.getDrawable(0);
-        selectedColor = ta.getColor(1, Color.TRANSPARENT);
-        ta.recycle();
-    }
+//    public AlbumsAdapter(Context context, Cursor c, int flags) {
+//        super(context, c, flags);
+//        TypedArray ta = context.getTheme().obtainStyledAttributes(
+//                new int[]{R.attr.album_thumbnail_placeholder});
+//        mPlaceholder = ta.getDrawable(0);
+//        selectedColor = ta.getColor(1, Color.TRANSPARENT);
+//        ta.recycle();
+//    }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {

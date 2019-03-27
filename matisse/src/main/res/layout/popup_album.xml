@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:elevation="10dp"
-    app:cardBackgroundColor="#fff"
+    app:elevation="20dp"
+    app:cardBackgroundColor="?attr/album.popup.bg"
     android:layout_width="210dp"
-    android:layout_height="350dp">
+    android:layout_height="wrap_content">
 
     <ListView
         android:id="@+id/listView"
-        android:divider="#DEDEDE"
+        android:divider="?attr/album.dropdown.divider"
         android:dividerHeight="1px"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 </android.support.v7.widget.CardView>

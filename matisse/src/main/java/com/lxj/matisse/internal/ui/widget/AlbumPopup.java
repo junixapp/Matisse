@@ -5,8 +5,11 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.AdapterView;
+import android.widget.CursorAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import com.lxj.matisse.MatisseUtil;
 import com.lxj.matisse.R;
 import com.lxj.xpopup.impl.PartShadowPopupView;
 
@@ -16,7 +19,7 @@ import com.lxj.xpopup.impl.PartShadowPopupView;
  */
 public class AlbumPopup extends PartShadowPopupView {
     ListView listView;
-    ListAdapter adapter;
+    CursorAdapter adapter;
     AdapterView.OnItemClickListener itemClickListener;
     public AlbumPopup(@NonNull Context context) {
         super(context);
@@ -30,16 +33,12 @@ public class AlbumPopup extends PartShadowPopupView {
     @Override
     protected void onCreate() {
         super.onCreate();
-        Log.e("tag", "onCreate onCreate onCreate");
         listView = findViewById(R.id.listView);
-
-        listView.setBackgroundColor(Color.WHITE);
-
         listView.setAdapter(this.adapter);
         listView.setOnItemClickListener(itemClickListener);
     }
 
-    public AlbumPopup setAdapter(ListAdapter adapter){
+    public AlbumPopup setAdapter(CursorAdapter adapter){
         this.adapter = adapter;
         return this;
     }
@@ -47,5 +46,10 @@ public class AlbumPopup extends PartShadowPopupView {
     public AlbumPopup setOnItemClickListener(AdapterView.OnItemClickListener itemClickListener){
         this.itemClickListener = itemClickListener;
         return this;
+    }
+
+    @Override
+    protected int getMaxHeight() {
+        return MatisseUtil.dp2px(getContext(), 350);
     }
 }
