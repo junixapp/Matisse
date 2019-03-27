@@ -82,7 +82,7 @@ public final class Matisse {
      * @return User selected media' {@link Uri} list.
      */
     public static List<Uri> obtainResult(Intent data) {
-        return data.getParcelableArrayListExtra(MatisseActivity.EXTRA_RESULT_SELECTION);
+        return data.getParcelableArrayListExtra(MatisseConst.EXTRA_RESULT_SELECTION);
     }
 
     /**
@@ -93,7 +93,25 @@ public final class Matisse {
      * @return User selected media path list.
      */
     public static List<String> obtainPathResult(Intent data) {
-        return data.getStringArrayListExtra(MatisseActivity.EXTRA_RESULT_SELECTION_PATH);
+        return data.getStringArrayListExtra(MatisseConst.EXTRA_RESULT_SELECTION_PATH);
+    }
+
+    /**
+     * 获取拍照或者录制的结果，如果是录制视频的话，则返回的是第一帧
+     * @param data
+     * @return
+     */
+    public static String obtainCaptureResult(Intent data) {
+        return data.getStringExtra(MatisseConst.EXTRA_RESULT_CAPTURE_PATH);
+    }
+
+    /**
+     * 获取录制视频的地址
+     * @param data
+     * @return
+     */
+    public static String obtainVideoResult(Intent data) {
+        return data.getStringExtra(MatisseConst.EXTRA_RESULT_VIDEO_PATH);
     }
 
     /**
@@ -104,7 +122,7 @@ public final class Matisse {
      * @return Whether use original photo
      */
     public static boolean obtainOriginalState(Intent data) {
-        return data.getBooleanExtra(MatisseActivity.EXTRA_RESULT_ORIGINAL_ENABLE, false);
+        return data.getBooleanExtra(MatisseConst.EXTRA_RESULT_ORIGINAL_ENABLE, false);
     }
 
     /**
@@ -136,6 +154,12 @@ public final class Matisse {
      */
     public SelectionCreator choose(Set<MimeType> mimeTypes, boolean mediaTypeExclusive) {
         return new SelectionCreator(this, mimeTypes, mediaTypeExclusive);
+    }
+
+    public SelectionCreator chooseCapture(){
+        SelectionCreator creator = new SelectionCreator(this);
+        creator.isJumpCapture = true;
+        return creator;
     }
 
     @Nullable

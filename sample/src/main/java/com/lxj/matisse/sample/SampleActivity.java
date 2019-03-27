@@ -54,6 +54,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
     private static final int REQUEST_CODE_CHOOSE = 23;
 
     private UriAdapter mAdapter;
+    TextView captureText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,8 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_main);
         findViewById(R.id.zhihu).setOnClickListener(this);
         findViewById(R.id.dracula).setOnClickListener(this);
-
+        findViewById(R.id.jumpCapture).setOnClickListener(this);
+        captureText = findViewById(R.id.captureText);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter = new UriAdapter());
@@ -69,6 +71,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(final View v) {
+        captureText.setVisibility(View.GONE);
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(new Observer<Boolean>() {
@@ -129,7 +132,10 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .isCrop(true)
                                             .forResult(REQUEST_CODE_CHOOSE);
                                     break;
-                                default:
+                                case R.id.jumpCapture:
+                                    Matisse.from(SampleActivity.this)
+                                            .chooseCapture()
+                                            .forResult(REQUEST_CODE_CHOOSE);
                                     break;
                             }
                             mAdapter.setData(null, null);
@@ -155,8 +161,21 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            mAdapter.setData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
-            Log.e("OnActivityResult", "originalState: "+String.valueOf(Matisse.obtainOriginalState(data)));
+            String capturePath = null;
+            String videoPath = null;
+            if((videoPath = Matisse.obtainVideoResult(data))!=null){
+                //录制的视频
+                capturePath = Matisse.obtainCaptureResult(data);
+                captureText.setVisibility(View.VISIBLE);
+                captureText.setText("视频路径："+videoPath
+                +" \n 第一帧图片："+capturePath);
+            }else if((capturePath = Matisse.obtainCaptureResult(data))!=null){
+                captureText.setVisibility(View.VISIBLE);
+                captureText.setText("拍照路径："+capturePath);
+            }else {
+                mAdapter.setData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
+                Log.e("OnActivityResult", "originalState: "+String.valueOf(Matisse.obtainOriginalState(data)));
+            }
         }
     }
 

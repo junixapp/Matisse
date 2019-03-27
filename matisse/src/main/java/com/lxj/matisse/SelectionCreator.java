@@ -32,6 +32,7 @@ import com.lxj.matisse.internal.entity.CaptureStrategy;
 import com.lxj.matisse.internal.entity.SelectionSpec;
 import com.lxj.matisse.listener.OnCheckedListener;
 import com.lxj.matisse.listener.OnSelectedListener;
+import com.lxj.matisse.ui.CameraActivity;
 import com.lxj.matisse.ui.MatisseActivity;
 
 import java.lang.annotation.Retention;
@@ -63,6 +64,7 @@ import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT;
 public final class SelectionCreator {
     private final Matisse mMatisse;
     private final SelectionSpec mSelectionSpec;
+    public boolean isJumpCapture;//是否直接跳转拍摄界面
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @IntDef({
@@ -99,6 +101,11 @@ public final class SelectionCreator {
         mSelectionSpec.mimeTypeSet = mimeTypes;
         mSelectionSpec.mediaTypeExclusive = mediaTypeExclusive;
         mSelectionSpec.orientation = SCREEN_ORIENTATION_UNSPECIFIED;
+    }
+
+    SelectionCreator(Matisse matisse) {
+        mMatisse = matisse;
+        mSelectionSpec = SelectionSpec.getCleanInstance();
     }
 
     /**
@@ -163,7 +170,7 @@ public final class SelectionCreator {
      *
      * @param maxImageSelectable Maximum selectable count for image.
      * @param maxVideoSelectable Maximum selectable count for video.
-     * @return  {@link SelectionCreator} for fluent API.
+     * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator maxSelectablePerMediaType(int maxImageSelectable, int maxVideoSelectable) {
         if (maxImageSelectable < 1 || maxVideoSelectable < 1)
@@ -216,6 +223,7 @@ public final class SelectionCreator {
 
     /**
      * Determines Whether to hide top and bottom toolbar in PreView mode ,when user tap the picture
+     *
      * @param enable
      * @return {@link SelectionCreator} for fluent API.
      */
@@ -354,7 +362,7 @@ public final class SelectionCreator {
             return;
         }
 
-        Intent intent = new Intent(activity, MatisseActivity.class);
+        Intent intent = new Intent(activity, isJumpCapture ? CameraActivity.class : MatisseActivity.class);
 
         Fragment fragment = mMatisse.getFragment();
         if (fragment != null) {

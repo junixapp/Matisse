@@ -30,6 +30,7 @@ dependencies {
     implementation ('com.github.yalantis:ucrop:2.2.2'){
         exclude group: 'com.android.support'
     }
+    implementation project(':camera')
 }
 
 publish {

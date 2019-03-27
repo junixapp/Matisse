@@ -42,7 +42,6 @@
             android:layout_marginLeft="@dimen/item_margin_horizontal"
             android:layout_marginRight="@dimen/item_margin_horizontal"
             android:layout_marginTop="8dp"
-            android:minHeight="56dp"
             android:text="Zhihu"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
@@ -52,17 +51,32 @@
             android:id="@+id/dracula"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
             android:layout_marginLeft="@dimen/item_margin_horizontal"
             android:layout_marginRight="@dimen/item_margin_horizontal"
-            android:layout_marginTop="16dp"
-            android:minHeight="56dp"
             android:text="Dracula"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:theme="@style/DraculaOverlay"/>
-    </LinearLayout>
 
+        <Button
+            android:id="@+id/jumpCapture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/item_margin_horizontal"
+            android:layout_marginRight="@dimen/item_margin_horizontal"
+            android:text="直接跳拍摄"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:theme="@style/ZhihuOverlay"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/captureText"
+        android:padding="15dp"
+        android:visibility="gone"
+        android:textColor="#fff"
+        android:background="@color/list_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
