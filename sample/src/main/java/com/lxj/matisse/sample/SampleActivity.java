@@ -134,7 +134,8 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                     break;
                                 case R.id.jumpCapture:
                                     Matisse.from(SampleActivity.this)
-                                            .chooseCapture()
+                                            .capture()
+                                            .isCrop(true)
                                             .forResult(REQUEST_CODE_CHOOSE);
                                     break;
                             }
@@ -163,17 +164,21 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             String capturePath = null;
             String videoPath = null;
-            if((videoPath = Matisse.obtainVideoResult(data))!=null){
+            String cropPath = null;
+            if((videoPath = Matisse.obtainCaptureVideoResult(data))!=null){
                 //录制的视频
-                capturePath = Matisse.obtainCaptureResult(data);
+                capturePath = Matisse.obtainCaptureImageResult(data);
                 captureText.setVisibility(View.VISIBLE);
                 captureText.setText("视频路径："+videoPath
                 +" \n 第一帧图片："+capturePath);
-            }else if((capturePath = Matisse.obtainCaptureResult(data))!=null){
+            }else if((capturePath = Matisse.obtainCaptureImageResult(data))!=null){
                 captureText.setVisibility(View.VISIBLE);
                 captureText.setText("拍照路径："+capturePath);
+            }else if((cropPath = Matisse.obtainCropResult(data))!=null){
+                captureText.setVisibility(View.VISIBLE);
+                captureText.setText("裁剪的路径："+cropPath);
             }else {
-                mAdapter.setData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
+                mAdapter.setData(Matisse.obtainSelectUriResult(data), Matisse.obtainSelectPathResult(data));
                 Log.e("OnActivityResult", "originalState: "+String.valueOf(Matisse.obtainOriginalState(data)));
             }
         }

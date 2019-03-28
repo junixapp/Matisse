@@ -81,7 +81,7 @@ public final class Matisse {
      *             {@link Fragment#onActivityResult(int, int, Intent)}.
      * @return User selected media' {@link Uri} list.
      */
-    public static List<Uri> obtainResult(Intent data) {
+    public static List<Uri> obtainSelectUriResult(Intent data) {
         return data.getParcelableArrayListExtra(MatisseConst.EXTRA_RESULT_SELECTION);
     }
 
@@ -92,8 +92,17 @@ public final class Matisse {
      *             {@link Fragment#onActivityResult(int, int, Intent)}.
      * @return User selected media path list.
      */
-    public static List<String> obtainPathResult(Intent data) {
+    public static List<String> obtainSelectPathResult(Intent data) {
         return data.getStringArrayListExtra(MatisseConst.EXTRA_RESULT_SELECTION_PATH);
+    }
+
+    /**
+     * 获取裁剪的结果，不管是选择照片裁剪还是拍摄照片裁剪
+     * @param data
+     * @return
+     */
+    public static String obtainCropResult(Intent data) {
+        return data.getStringExtra(MatisseConst.EXTRA_RESULT_CROP_PATH);
     }
 
     /**
@@ -101,8 +110,8 @@ public final class Matisse {
      * @param data
      * @return
      */
-    public static String obtainCaptureResult(Intent data) {
-        return data.getStringExtra(MatisseConst.EXTRA_RESULT_CAPTURE_PATH);
+    public static String obtainCaptureImageResult(Intent data) {
+        return data.getStringExtra(MatisseConst.EXTRA_RESULT_CAPTURE_IMAGE_PATH);
     }
 
     /**
@@ -110,8 +119,8 @@ public final class Matisse {
      * @param data
      * @return
      */
-    public static String obtainVideoResult(Intent data) {
-        return data.getStringExtra(MatisseConst.EXTRA_RESULT_VIDEO_PATH);
+    public static String obtainCaptureVideoResult(Intent data) {
+        return data.getStringExtra(MatisseConst.EXTRA_RESULT_CAPTURE_VIDEO_PATH);
     }
 
     /**
@@ -156,7 +165,7 @@ public final class Matisse {
         return new SelectionCreator(this, mimeTypes, mediaTypeExclusive);
     }
 
-    public SelectionCreator chooseCapture(){
+    public SelectionCreator capture(){
         SelectionCreator creator = new SelectionCreator(this);
         creator.isJumpCapture = true;
         return creator;

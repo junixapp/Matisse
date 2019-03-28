@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,14 +24,18 @@ import com.cjt2325.cameralibrary.listener.JCameraListener;
 import com.cjt2325.cameralibrary.util.FileUtil;
 import com.lxj.matisse.MatisseConst;
 import com.lxj.matisse.R;
+import com.lxj.matisse.internal.entity.SelectionSpec;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 
 public class CameraActivity extends AppCompatActivity {
     private JCameraView jCameraView;
-
+    private SelectionSpec mSpec;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSpec = SelectionSpec.getInstance();
+        setTheme(mSpec.themeId);
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -64,12 +69,18 @@ public class CameraActivity extends AppCompatActivity {
         jCameraView.setJCameraLisenter(new JCameraListener() {
             @Override
             public void captureSuccess(Bitmap bitmap) {
+
                 //获取图片bitmap
                 String path = FileUtil.saveBitmap("matisse", bitmap);
-                Intent intent = new Intent();
-                intent.putExtra(MatisseConst.EXTRA_RESULT_CAPTURE_PATH, path);
-                setResult(RESULT_OK, intent);
-                finish();
+                if(mSpec.isCrop){
+                    //需要裁剪
+                    MatisseActivity.startCrop(CameraActivity.this, Uri.parse("file://"+path));
+                }else {
+                    Intent intent = new Intent();
+                    intent.putExtra(MatisseConst.EXTRA_RESULT_CAPTURE_IMAGE_PATH, path);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             }
 
             @Override
@@ -78,8 +89,8 @@ public class CameraActivity extends AppCompatActivity {
                 String path = FileUtil.saveBitmap("matisse", firstFrame);
                 Log.i("CJT", "url = " + url + ", Bitmap = " + path);
                 Intent intent = new Intent();
-                intent.putExtra(MatisseConst.EXTRA_RESULT_CAPTURE_PATH, path);
-                intent.putExtra(MatisseConst.EXTRA_RESULT_VIDEO_PATH, url);
+                intent.putExtra(MatisseConst.EXTRA_RESULT_CAPTURE_IMAGE_PATH, path);
+                intent.putExtra(MatisseConst.EXTRA_RESULT_CAPTURE_VIDEO_PATH, url);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -99,6 +110,25 @@ public class CameraActivity extends AppCompatActivity {
 //        });
 
 //        Log.i("CJT", DeviceUtil.getDeviceModel());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK)
+            return;
+        if (requestCode == UCrop.REQUEST_CROP) {
+            final Uri resultUri = UCrop.getOutput(data);
+            if (resultUri != null) {
+                //finish with result.
+                Intent result = new Intent();
+                result.putExtra(MatisseConst.EXTRA_RESULT_CROP_PATH, resultUri.getPath());
+                setResult(RESULT_OK, result);
+                finish();
+            } else {
+                Log.e("Matisse", "ucrop occur error: "+UCrop.getError(data).toString());
+            }
+        }
     }
 
     @Override

@@ -44,7 +44,15 @@ Matisse.from(MainActivity.this)
         .imageEngine(new GlideEngine())
         .forResult(REQUEST_CODE_CHOOSE);
 ```
- 
+直接跳转拍摄界面：
+```java
+Matisse.from(SampleActivity.this)
+        .capture()
+        .isCrop(true) //是否对拍照的结果裁剪
+        .forResult(REQUEST_CODE_CHOOSE);
+```
+
+
 #### 选择主题
 There are two built-in themes you can use to start `MatisseActivity`:
 - `R.style.Matisse_Zhihu` (light mode)
@@ -55,14 +63,22 @@ And Also you can define your own theme as you wish.
 #### 接收结果
 
 ```java
-List<Uri> mSelected;
-
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-        mSelected = Matisse.obtainResult(data);
-        Log.d("Matisse", "mSelected: " + mSelected);
+        //获取拍摄的图片路径，如果是录制视频则是视频的第一帧图片路径
+        String captureImagePath = Matisse.obtainCaptureImageResult(data);
+
+        //获取拍摄的视频路径
+        String captureVideoPath = Matisse.obtainCaptureVideoResult(data);
+
+        //获取裁剪结果的路径，不管是选择照片裁剪还是拍摄照片裁剪，结果都从这里取
+        String cropPath = Matisse.obtainCropResult(data);
+
+        //获取选择图片或者视频的结果路径
+        Matisse.obtainSelectUriResult(data);//uri形式的路径
+        Matisse.obtainSelectPathResult(data)//文件形式路径
     }
 }
 ```
@@ -77,8 +93,3 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 ```pro
 -dontwarn com.bumptech.glide.**
 ```
-
-## TODO
-- 集成照片剪切功能
-- 权限封装
-- 继承拍照/录制视频的功能

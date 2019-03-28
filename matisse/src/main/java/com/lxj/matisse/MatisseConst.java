@@ -12,7 +12,8 @@ public interface MatisseConst {
 
     String EXTRA_RESULT_SELECTION = "extra_result_selection";
     String EXTRA_RESULT_SELECTION_PATH = "extra_result_selection_path";
-    String EXTRA_RESULT_CAPTURE_PATH = "extra_result_capture_path";//拍照或者录制的第一帧
-    String EXTRA_RESULT_VIDEO_PATH = "extra_result_video_path";//视频路径
+    String EXTRA_RESULT_CAPTURE_IMAGE_PATH = "extra_result_capture_image_path";//拍照或者录制的第一帧
+    String EXTRA_RESULT_CAPTURE_VIDEO_PATH = "extra_result_capture_video_path";//视频路径
+    String EXTRA_RESULT_CROP_PATH = "extra_result_capture_crop_path";//裁剪结果的路径
     String EXTRA_RESULT_ORIGINAL_ENABLE = "extra_result_original_enable";
 }

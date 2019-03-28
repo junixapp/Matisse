@@ -16,6 +16,7 @@
 package com.lxj.matisse.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -202,7 +203,7 @@ public class MatisseActivity extends AppCompatActivity implements
             if (data.getBooleanExtra(BasePreviewActivity.EXTRA_RESULT_APPLY, false)) {
                 if(mSpec.isCrop && selected.size()==1 && selected.get(0).isImage()){
                     //start crop
-                    startCrop(selected.get(0).uri);
+                    startCrop(this, selected.get(0).uri);
                     return;
                 }
 
@@ -238,13 +239,7 @@ public class MatisseActivity extends AppCompatActivity implements
             if (resultUri != null) {
                 //finish with result.
                 Intent result = new Intent();
-                ArrayList<Uri> selectedUris = new ArrayList<>();
-                selectedUris.add(resultUri);
-                result.putParcelableArrayListExtra(MatisseConst.EXTRA_RESULT_SELECTION, selectedUris);
-                ArrayList<String> selectedPaths = new ArrayList<>();
-                selectedPaths.add(resultUri.getPath());
-                result.putStringArrayListExtra(MatisseConst.EXTRA_RESULT_SELECTION_PATH, selectedPaths);
-                result.putExtra(MatisseConst.EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
+                result.putExtra(MatisseConst.EXTRA_RESULT_CROP_PATH, resultUri.getPath());
                 setResult(RESULT_OK, result);
                 finish();
             } else {
@@ -332,7 +327,7 @@ public class MatisseActivity extends AppCompatActivity implements
             result.putExtra(MatisseConst.EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
             if(mSpec.isCrop && selectedPaths.size()==1 && mSelectedCollection.asList().get(0).isImage()){
                 //start crop
-                startCrop(selectedUris.get(0));
+                startCrop(this, selectedUris.get(0));
             }else {
                 setResult(RESULT_OK, result);
                 finish();
@@ -359,12 +354,12 @@ public class MatisseActivity extends AppCompatActivity implements
         }
     }
 
-    public void startCrop(Uri source){
+    public static void startCrop(Activity context,Uri source){
         String destinationFileName = System.nanoTime()+"_crop.jpg";
         UCrop.Options options = new UCrop.Options();
         options.setCompressionQuality(90);
         // Color palette
-        TypedArray ta = getTheme().obtainStyledAttributes(
+        TypedArray ta = context.getTheme().obtainStyledAttributes(
                 new int[]{R.attr.colorPrimary,
                         R.attr.colorPrimaryDark});
         int primaryColor = ta.getColor(0, Color.TRANSPARENT);
@@ -372,11 +367,11 @@ public class MatisseActivity extends AppCompatActivity implements
         options.setStatusBarColor(ta.getColor(1, Color.TRANSPARENT));
         options.setActiveWidgetColor(primaryColor);
         ta.recycle();
-        File cacheFile = new File(getCacheDir(), destinationFileName);
+        File cacheFile = new File(context.getCacheDir(), destinationFileName);
         UCrop.of(source, Uri.fromFile(cacheFile))
                 .withAspectRatio(1, 1)
                 .withOptions(options)
-                .start(this);
+                .start(context);
     }
     //相册条目点击
     @Override
