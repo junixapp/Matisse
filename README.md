@@ -1,6 +1,6 @@
 
 ## Matisse
-知乎Matisse的增强版，主要优化了用户体验，功能上集成了UCrop + CameraView。
+知乎Matisse的增强版，主要优化了用户体验，功能上集成了[UCrop](https://github.com/Yalantis/uCrop) + [CameraView](https://github.com/CJT2325/CameraView)。
 
 
 ## 功能
