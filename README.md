@@ -11,6 +11,7 @@
 # 预览
 ![Image](/screenshot/1.gif)
 ![Image](/screenshot/2.gif)
+![Image](/screenshot/3.gif)
 
 
 ## 使用
