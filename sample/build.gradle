@@ -24,6 +24,7 @@ ext.supportLibVersion = '26.0.0'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':matisse')
+//    implementation 'com.lxj:matisse:0.0.3'
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
     implementation "com.android.support:design:${supportLibVersion}"
