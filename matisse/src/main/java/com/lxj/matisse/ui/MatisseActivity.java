@@ -463,8 +463,8 @@ public class MatisseActivity extends AppCompatActivity implements
 //        if (mMediaStoreCompat != null) {
 //            mMediaStoreCompat.dispatchCaptureIntent(this, REQUEST_CODE_CAPTURE);
 //        }
-        startActivityForResult(new Intent(this, CameraActivity.class),
-                MatisseConst.REQUEST_CODE_CAPTURE);
+        Intent intent = new Intent(this, CameraActivity.class);
+        startActivityForResult(intent, MatisseConst.REQUEST_CODE_CAPTURE);
         
     }
 

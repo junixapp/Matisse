@@ -40,7 +40,7 @@ public class CameraActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_camera);
-        jCameraView = (JCameraView) findViewById(R.id.jcameraview);
+        jCameraView = findViewById(R.id.jcameraview);
         getPermission();
     }
 
@@ -69,7 +69,6 @@ public class CameraActivity extends AppCompatActivity {
         jCameraView.setJCameraLisenter(new JCameraListener() {
             @Override
             public void captureSuccess(Bitmap bitmap) {
-
                 //获取图片bitmap
                 String path = FileUtil.saveBitmap("matisse", bitmap);
                 if(mSpec.isCrop){
@@ -87,7 +86,7 @@ public class CameraActivity extends AppCompatActivity {
             public void recordSuccess(String url, Bitmap firstFrame) {
                 //获取视频路径
                 String path = FileUtil.saveBitmap("matisse", firstFrame);
-                Log.i("CJT", "url = " + url + ", Bitmap = " + path);
+//                Log.i("CJT", "url = " + url + ", Bitmap = " + path);
                 Intent intent = new Intent();
                 intent.putExtra(MatisseConst.EXTRA_RESULT_CAPTURE_IMAGE_PATH, path);
                 intent.putExtra(MatisseConst.EXTRA_RESULT_CAPTURE_VIDEO_PATH, url);

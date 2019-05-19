@@ -4,7 +4,7 @@
 
 
 ## 功能
-- 拍摄照片和视频
+- 拍摄照片和视频，或者只拍摄照片
 - 支持照片裁剪
 - 自动申请所需所有权限，无需额外操作
 - Matisse本身所有功能
@@ -35,7 +35,7 @@ Matisse.from(SampleActivity.this)
 直接跳转拍摄界面：
 ```java
 Matisse.from(SampleActivity.this)
-    .jumpCapture()//直接跳拍摄
+    .jumpCapture()//直接跳拍摄，jumpCapture(true)表示只拍摄照片
     .isCrop(true) //开启裁剪
     .forResult(REQUEST_CODE_CHOOSE);
 ```
@@ -106,8 +106,3 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 ```pro
 -dontwarn com.bumptech.glide.**
 ```
-
-
-## TODO
-- 权限自动申请
-- Capture

@@ -113,7 +113,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.jumpCapture:
                 Matisse.from(SampleActivity.this)
-                        .jumpCapture()//直接跳拍摄
+                        .jumpCapture()//直接跳拍摄，如果只想拍摄图片不拍视频，则使用jumpCapture(true)
                         .isCrop(true) //开启裁剪
                         .forResult(REQUEST_CODE_CHOOSE);
                 break;

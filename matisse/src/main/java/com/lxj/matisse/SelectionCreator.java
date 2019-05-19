@@ -66,7 +66,7 @@ import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT;
 @SuppressWarnings("unused")
 public final class SelectionCreator {
     private final Matisse mMatisse;
-    private final SelectionSpec mSelectionSpec;
+    public final SelectionSpec mSelectionSpec;
     public boolean isJumpCapture;//是否直接跳转拍摄界面
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)

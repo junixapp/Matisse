@@ -165,10 +165,20 @@ public final class Matisse {
         return new SelectionCreator(this, mimeTypes, mediaTypeExclusive);
     }
 
-    public SelectionCreator jumpCapture(){
+    /**
+     * 直接跳转拍摄界面
+     * @param onlyCaptureImage 是否只拍图片，不拍摄视频，默认是false
+     * @return
+     */
+    public SelectionCreator jumpCapture(boolean onlyCaptureImage){
         SelectionCreator creator = new SelectionCreator(this);
         creator.isJumpCapture = true;
+        creator.mSelectionSpec.onlyCaptureImage = onlyCaptureImage;
         return creator;
+    }
+
+    public SelectionCreator jumpCapture(){
+        return jumpCapture(false);
     }
 
     @Nullable

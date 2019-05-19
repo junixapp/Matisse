@@ -56,6 +56,7 @@ public final class SelectionSpec {
     public int originalMaxSize = Integer.MAX_VALUE;
     public OnCheckedListener onCheckedListener;
     public boolean isCrop;//是否进行裁剪
+    public boolean onlyCaptureImage = false;//是否只拍图片，不拍视频
 
     private SelectionSpec() {
     }
@@ -92,6 +93,7 @@ public final class SelectionSpec {
         autoHideToobar = true;
         originalMaxSize = Integer.MAX_VALUE;
         isCrop = false;
+        onlyCaptureImage = false;
     }
 
     public boolean singleSelectionModeEnabled() {

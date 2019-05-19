@@ -20,6 +20,7 @@ import com.cjt2325.cameralibrary.listener.CaptureListener;
 import com.cjt2325.cameralibrary.listener.ClickListener;
 import com.cjt2325.cameralibrary.listener.ReturnListener;
 import com.cjt2325.cameralibrary.listener.TypeListener;
+import com.lxj.matisse.internal.entity.SelectionSpec;
 
 
 /**
@@ -206,7 +207,6 @@ public class CaptureLayout extends FrameLayout {
                     typeLisenter.cancel();
                 }
                 startAlphaAnimation();
-//                resetCaptureLayout();
             }
         });
 
@@ -223,7 +223,6 @@ public class CaptureLayout extends FrameLayout {
                     typeLisenter.confirm();
                 }
                 startAlphaAnimation();
-//                resetCaptureLayout();
             }
         });
 
@@ -286,7 +285,7 @@ public class CaptureLayout extends FrameLayout {
         this.addView(btn_return);
         this.addView(iv_custom_left);
         this.addView(iv_custom_right);
-        this.addView(txt_tip);
+        if(!SelectionSpec.getInstance().onlyCaptureImage) this.addView(txt_tip);
 
     }
 

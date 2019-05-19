@@ -15,6 +15,7 @@ import android.view.View;
 import com.cjt2325.cameralibrary.listener.CaptureListener;
 import com.cjt2325.cameralibrary.util.CheckPermission;
 import com.cjt2325.cameralibrary.util.LogUtil;
+import com.lxj.matisse.internal.entity.SelectionSpec;
 
 import static com.cjt2325.cameralibrary.JCameraView.BUTTON_STATE_BOTH;
 import static com.cjt2325.cameralibrary.JCameraView.BUTTON_STATE_ONLY_CAPTURE;
@@ -312,6 +313,7 @@ public class CaptureButton extends View {
     private class LongPressRunnable implements Runnable {
         @Override
         public void run() {
+            if(SelectionSpec.getInstance().onlyCaptureImage)return;
             state = STATE_LONG_PRESS;   //如果按下后经过500毫秒则会修改当前状态为长按状态
             //没有录制权限
             if (CheckPermission.getRecordState() != CheckPermission.STATE_SUCCESS) {
