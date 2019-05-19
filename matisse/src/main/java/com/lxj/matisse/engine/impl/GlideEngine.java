@@ -26,7 +26,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.lxj.matisse.engine.ImageEngine;
 
 /**
- * {@link ImageEngine} implementation using Glide.
+ * {@link ImageEngine} implementation using Glide 4.
  */
 
 public class GlideEngine implements ImageEngine {

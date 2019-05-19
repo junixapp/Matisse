@@ -25,6 +25,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
 import com.lxj.matisse.engine.ImageEngine;
 import com.lxj.matisse.filter.Filter;
@@ -34,6 +35,8 @@ import com.lxj.matisse.listener.OnCheckedListener;
 import com.lxj.matisse.listener.OnSelectedListener;
 import com.lxj.matisse.ui.CameraActivity;
 import com.lxj.matisse.ui.MatisseActivity;
+import com.lxj.xpermission.PermissionConstants;
+import com.lxj.xpermission.XPermission;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -356,20 +359,29 @@ public final class SelectionCreator {
      *
      * @param requestCode Identity of the request Activity or Fragment.
      */
-    public void forResult(int requestCode) {
-        Activity activity = mMatisse.getActivity();
+    public void forResult(final int requestCode) {
+        final Activity activity = mMatisse.getActivity();
         if (activity == null) {
             return;
         }
-
-        Intent intent = new Intent(activity, isJumpCapture ? CameraActivity.class : MatisseActivity.class);
-
-        Fragment fragment = mMatisse.getFragment();
-        if (fragment != null) {
-            fragment.startActivityForResult(intent, requestCode);
-        } else {
-            activity.startActivityForResult(intent, requestCode);
-        }
+        //自动进行权限检查
+        XPermission.create(activity, PermissionConstants.STORAGE)
+                .callback(new XPermission.SimpleCallback (){
+                    @Override
+                    public void onGranted() {
+                        Intent intent = new Intent(activity, isJumpCapture ? CameraActivity.class : MatisseActivity.class);
+                        Fragment fragment = mMatisse.getFragment();
+                        if (fragment != null) {
+                            fragment.startActivityForResult(intent, requestCode);
+                        } else {
+                            activity.startActivityForResult(intent, requestCode);
+                        }
+                    }
+                    @Override
+                    public void onDenied() {
+                        Toast.makeText(activity, "没有权限，无法使用相册功能", Toast.LENGTH_SHORT).show();
+                    }
+                }).request();
     }
 
     /**

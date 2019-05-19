@@ -17,12 +17,12 @@ package com.lxj.matisse.internal.entity;
 
 public class CaptureStrategy {
 
-    public final boolean isPublic;
-    public final String authority;
-    public final String directory;
+    public boolean isPublic = true;
+    public String authority;
+    public String directory = "capture";
 
-    public CaptureStrategy(boolean isPublic, String authority) {
-        this(isPublic, authority, null);
+    public CaptureStrategy() {
+        this(true, "", "capture");
     }
 
     public CaptureStrategy(boolean isPublic, String authority, String directory) {

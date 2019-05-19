@@ -37,14 +37,14 @@ public final class SelectionSpec {
     public boolean showSingleMediaType;
     @StyleRes
     public int themeId;
-    public int orientation;
-    public boolean countable;
-    public int maxSelectable;
+    public int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    public boolean countable = true;
+    public int maxSelectable = 9;
     public int maxImageSelectable;
     public int maxVideoSelectable;
     public List<Filter> filters;
     public boolean capture;
-    public CaptureStrategy captureStrategy;
+    public CaptureStrategy captureStrategy = new CaptureStrategy();
     public int spanCount;
     public int gridExpectedSize;
     public float thumbnailScale;
@@ -52,8 +52,8 @@ public final class SelectionSpec {
     public boolean hasInited;
     public OnSelectedListener onSelectedListener;
     public boolean originalable;
-    public boolean autoHideToobar;
-    public int originalMaxSize;
+    public boolean autoHideToobar = true;
+    public int originalMaxSize = Integer.MAX_VALUE;
     public OnCheckedListener onCheckedListener;
     public boolean isCrop;//是否进行裁剪
 
@@ -75,21 +75,21 @@ public final class SelectionSpec {
         mediaTypeExclusive = true;
         showSingleMediaType = false;
         themeId = R.style.Matisse_Zhihu;
-        orientation = 0;
-        countable = false;
-        maxSelectable = 1;
+        orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        countable = true;
+        maxSelectable = 9;
         maxImageSelectable = 0;
         maxVideoSelectable = 0;
         filters = null;
         capture = false;
-        captureStrategy = null;
+        captureStrategy = new CaptureStrategy();
         spanCount = 3;
         gridExpectedSize = 0;
         thumbnailScale = 0.5f;
         imageEngine = new GlideEngine();
         hasInited = true;
         originalable = false;
-        autoHideToobar = false;
+        autoHideToobar = true;
         originalMaxSize = Integer.MAX_VALUE;
         isCrop = false;
     }

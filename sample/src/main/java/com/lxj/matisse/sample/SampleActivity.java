@@ -15,7 +15,6 @@
  */
 package com.lxj.matisse.sample;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -31,12 +30,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.lxj.matisse.Matisse;
 import com.lxj.matisse.MimeType;
+import com.lxj.matisse.engine.impl.GlideEngine;
 import com.lxj.matisse.engine.impl.PicassoEngine;
 import com.lxj.matisse.filter.Filter;
 import com.lxj.matisse.internal.entity.CaptureStrategy;
@@ -45,9 +43,6 @@ import com.lxj.matisse.listener.OnSelectedListener;
 
 import java.io.File;
 import java.util.List;
-
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 
 public class SampleActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -72,90 +67,58 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(final View v) {
         captureText.setVisibility(View.GONE);
-        RxPermissions rxPermissions = new RxPermissions(this);
-        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .subscribe(new Observer<Boolean>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Boolean aBoolean) {
-                        if (aBoolean) {
-                            switch (v.getId()) {
-                                case R.id.zhihu:
-                                    Matisse.from(SampleActivity.this)
-                                            .choose(MimeType.ofAll(), false)
-                                            .countable(true)
-                                            .capture(true)
-                                            .captureStrategy(
-                                                    new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider","test"))
-                                            .maxSelectable(9)
-                                            .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-//                                            .gridExpectedSize(
-//                                                    getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-                                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                                            .thumbnailScale(0.85f)
-                                            .setOnSelectedListener(new OnSelectedListener() {
-                                                @Override
-                                                public void onSelected(
-                                                        @NonNull List<Uri> uriList, @NonNull List<String> pathList) {
-                                                    // DO SOMETHING IMMEDIATELY HERE
-                                                    Log.e("onSelected", "onSelected: pathList=" + pathList);
-
-                                                }
-                                            })
-                                            .originalEnable(true)
-                                            .maxOriginalSize(10)
-                                            .autoHideToolbarOnSingleTap(true)
-                                            .isCrop(true)
-                                            .setOnCheckedListener(new OnCheckedListener() {
-                                                @Override
-                                                public void onCheck(boolean isChecked) {
-                                                    // DO SOMETHING IMMEDIATELY HERE
-                                                    Log.e("isChecked", "onCheck: isChecked=" + isChecked);
-                                                }
-                                            })
-                                            .forResult(REQUEST_CODE_CHOOSE);
-                                    break;
-                                case R.id.dracula:
-                                    Matisse.from(SampleActivity.this)
-                                            .choose(MimeType.ofImage())
-                                            .theme(R.style.Matisse_Dracula)
-                                            .countable(false)
-                                            .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-                                            .maxSelectable(9)
-                                            .originalEnable(true)
-                                            .maxOriginalSize(10)
-                                            .imageEngine(new PicassoEngine())
-                                            .isCrop(true)
-                                            .forResult(REQUEST_CODE_CHOOSE);
-                                    break;
-                                case R.id.jumpCapture:
-                                    Matisse.from(SampleActivity.this)
-                                            .capture()
-                                            .isCrop(true)
-                                            .forResult(REQUEST_CODE_CHOOSE);
-                                    break;
-                            }
-                            mAdapter.setData(null, null);
-                        } else {
-                            Toast.makeText(SampleActivity.this, R.string.permission_request_denied, Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+        switch (v.getId()) {
+            case R.id.zhihu:
+                Matisse.from(SampleActivity.this)
+                        .choose(MimeType.ofAll()) //显示所有文件类型，比如图片和视频，
+                        .capture(true)//是否显示拍摄按钮，默认不显示
+//                        .maxSelectable(9) //默认9张
+                        //添加图片过滤器，比如过滤掉小于10K的图片
+//                        .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+                        //设置选中图片的监听器
+//                        .setOnSelectedListener(new OnSelectedListener() {
+//                            @Override
+//                            public void onSelected(
+//                                    @NonNull List<Uri> uriList, @NonNull List<String> pathList) {
+//                                // DO SOMETHING IMMEDIATELY HERE
+//                                Log.e("onSelected", "onSelected: pathList=" + pathList);
+//
+//                            }
+//                        })
+//                        .originalEnable(true)//是否显示原图，默认显示
+                        //设置原图选中和取消选中的监听器
+//                        .setOnCheckedListener(new OnCheckedListener() {
+//                            @Override
+//                            public void onCheck(boolean isChecked) {
+//                                // DO SOMETHING IMMEDIATELY HERE
+//                                Log.e("isChecked", "onCheck: isChecked=" + isChecked);
+//                            }
+//                        })
+//                        .imageEngine(new GlideEngine()) // 默认是Glide4.x版本的加载器，如果你用的是Glide4.x，则无需设置
+                        //.imageEngine(new PicassoEngine())//如果你用的是Picasso
+                        .imageEngine(new Glide3Engine())//如果你用的是Glide3.x版本，Glide3Engine这个类在demo中
+                        .forResult(REQUEST_CODE_CHOOSE); //请求码
+                break;
+            case R.id.dracula:
+                Matisse.from(SampleActivity.this)
+                        .choose(MimeType.ofImage())
+                        .theme(R.style.Matisse_Dracula)
+                        .countable(false)
+                        .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+                        .maxSelectable(9)
+                        .originalEnable(true)
+                        .imageEngine(new PicassoEngine())
+                        .isCrop(true)
+                        .forResult(REQUEST_CODE_CHOOSE);
+                break;
+            case R.id.jumpCapture:
+                Matisse.from(SampleActivity.this)
+                        .jumpCapture()//直接跳拍摄
+                        .isCrop(true) //开启裁剪
+                        .forResult(REQUEST_CODE_CHOOSE);
+                break;
+        }
+        mAdapter.setData(null, null);
     }
 
     @Override
@@ -209,7 +172,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
 
             holder.mUri.setAlpha(position % 2 == 0 ? 1.0f : 0.54f);
             holder.mPath.setAlpha(position % 2 == 0 ? 1.0f : 0.54f);
-            Glide.with(holder.image).load(mUris.get(position)).into(holder.image);
+            Glide.with(holder.image.getContext()).load(mUris.get(position)).into(holder.image);
         }
 
         @Override

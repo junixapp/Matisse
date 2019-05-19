@@ -165,7 +165,7 @@ public final class Matisse {
         return new SelectionCreator(this, mimeTypes, mediaTypeExclusive);
     }
 
-    public SelectionCreator capture(){
+    public SelectionCreator jumpCapture(){
         SelectionCreator creator = new SelectionCreator(this);
         creator.isJumpCapture = true;
         return creator;

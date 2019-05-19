@@ -1,11 +1,12 @@
 
 ## Matisse
-知乎Matisse的增强版，主要优化了用户体验，功能上集成了[UCrop](https://github.com/Yalantis/uCrop) + [CameraView](https://github.com/CJT2325/CameraView)。
+知乎Matisse的增强版，简化了使用，优化了用户体验，功能上集成了[UCrop](https://github.com/Yalantis/uCrop) + [CameraView](https://github.com/CJT2325/CameraView)。
 
 
 ## 功能
 - 拍摄照片和视频
 - 支持照片裁剪
+- 自动申请所需所有权限，无需额外操作
 - Matisse本身所有功能
 
 # 预览
@@ -21,45 +22,56 @@ implementation 'com.lxj:matisse:最新版本'
 ```
 
 ## 如何使用
-#### Permission
-The library requires two permissions:
-- `android.permission.READ_EXTERNAL_STORAGE`
-- `android.permission.WRITE_EXTERNAL_STORAGE`
-
-So if you are targeting Android 6.0+, you need to handle runtime permission request before next step.
-
-#### Simple usage snippet
-------
-Start `MatisseActivity` from current `Activity` or `Fragment`:
-
+最简单一行代码即可调用：
 ```java
-Matisse.from(MainActivity.this)
-        .choose(MimeType.allOf())
-        .countable(true)
-        .maxSelectable(9)
-        .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-        .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-        .thumbnailScale(0.85f)
-        .isCrop(true)//开启裁剪，只有选择单张图片才能裁剪
-        .imageEngine(new GlideEngine())
-        .forResult(REQUEST_CODE_CHOOSE);
+Matisse.from(SampleActivity.this)
+    .choose(MimeType.ofAll()) //显示所有文件类型，比如图片和视频，
+    .capture(true)//是否显示拍摄按钮，默认不显示
+    .isCrop(true)//开启裁剪，默认不开启
+    //.imageEngine(new GlideEngine()) //默认是Glide4.x版本的加载器，如果你用的是Glide4.x，则无需设置
+    //.imageEngine(new Glide3Engine())//如果你用的是Glide3.x版本，请打开这个，Glide3Engine这个类在demo中
+    .forResult(REQUEST_CODE_CHOOSE); //请求码
 ```
 直接跳转拍摄界面：
 ```java
 Matisse.from(SampleActivity.this)
-        .capture()
-        .isCrop(true) //是否对拍照的结果裁剪
-        .forResult(REQUEST_CODE_CHOOSE);
+    .jumpCapture()//直接跳拍摄
+    .isCrop(true) //开启裁剪
+    .forResult(REQUEST_CODE_CHOOSE);
 ```
+详细设置：
+```java
+Matisse.from(SampleActivity.this)
+    .choose(MimeType.ofAll())
+    .capture(true)
+    .maxSelectable(9) //默认最大选中9张，设置为1就是单选
+    .theme(R.style.Matisse_Dracula)//暗色主题
+    //添加图片过滤器，比如过滤掉小于10K的图片
+    .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+    //设置选中图片的监听器
+    .setOnSelectedListener(new OnSelectedListener() {
+        @Override
+        public void onSelected(
+                @NonNull List<Uri> uriList, @NonNull List<String> pathList) {
+            // DO SOMETHING IMMEDIATELY HERE
+            Log.e("onSelected", "onSelected: pathList=" + pathList);
 
-
-#### 选择主题
-There are two built-in themes you can use to start `MatisseActivity`:
-- `R.style.Matisse_Zhihu` (light mode)
-- `R.style.Matisse_Dracula` (dark mode)  
-
-And Also you can define your own theme as you wish.
+        }
+    })
+    .originalEnable(true)//是否显示原图，默认显示
+    //设置原图选中和取消选中的监听器
+    .setOnCheckedListener(new OnCheckedListener() {
+        @Override
+        public void onCheck(boolean isChecked) {
+            // DO SOMETHING IMMEDIATELY HERE
+            Log.e("isChecked", "onCheck: isChecked=" + isChecked);
+        }
+    })
+    //.imageEngine(new GlideEngine()) // 默认是Glide4.x版本的加载器，如果你用的是Glide4.x，则无需设置
+    //.imageEngine(new Glide3Engine())//如果你用的是Glide3.x版本，Glide3Engine这个类在demo中
+    //.imageEngine(new PicassoEngine())//如果你用的是Picasso
+    .forResult(REQUEST_CODE_CHOOSE); //请求码
+```
 
 #### 接收结果
 
@@ -77,7 +89,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //获取裁剪结果的路径，不管是选择照片裁剪还是拍摄照片裁剪，结果都从这里取
         String cropPath = Matisse.obtainCropResult(data);
 
-        //获取选择图片或者视频的结果路径
+        //获取选择图片或者视频的结果路径，不开启裁剪的情况下
         Matisse.obtainSelectUriResult(data);//uri形式的路径
         Matisse.obtainSelectPathResult(data)//文件形式路径
     }
@@ -94,3 +106,8 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 ```pro
 -dontwarn com.bumptech.glide.**
 ```
+
+
+## TODO
+- 权限自动申请
+- Capture
