@@ -18,10 +18,10 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/album_item_height">
 
-    <com.lxj.matisse.internal.ui.widget.RoundedRectangleImageView
+    <ImageView
         android:id="@+id/album_cover"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp" />
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@id/album_name"
         android:layout_below="@id/album_name"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="5dp"
         android:layout_toEndOf="@id/album_cover"
         android:ellipsize="end"
         android:maxLines="1"

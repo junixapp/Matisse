@@ -47,6 +47,6 @@ public class AlbumPopup extends PartShadowPopupView {
 
     @Override
     protected int getMaxHeight() {
-        return UIUtils.dp2px(getContext(), 350);
+        return UIUtils.dp2px(getContext(), 360);
     }
 }
