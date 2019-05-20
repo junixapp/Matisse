@@ -20,6 +20,7 @@ import com.cjt2325.cameralibrary.listener.CaptureListener;
 import com.cjt2325.cameralibrary.listener.ClickListener;
 import com.cjt2325.cameralibrary.listener.ReturnListener;
 import com.cjt2325.cameralibrary.listener.TypeListener;
+import com.lxj.matisse.CaptureMode;
 import com.lxj.matisse.internal.entity.SelectionSpec;
 
 
@@ -274,7 +275,9 @@ public class CaptureLayout extends FrameLayout {
         LayoutParams txt_param = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         txt_param.gravity = Gravity.CENTER_HORIZONTAL;
         txt_param.setMargins(0, 0, 0, 0);
-        txt_tip.setText("轻触拍照，长按摄像");
+
+
+        txt_tip.setText(getTipText());
         txt_tip.setTextColor(0xFFFFFFFF);
         txt_tip.setGravity(Gravity.CENTER);
         txt_tip.setLayoutParams(txt_param);
@@ -285,8 +288,19 @@ public class CaptureLayout extends FrameLayout {
         this.addView(btn_return);
         this.addView(iv_custom_left);
         this.addView(iv_custom_right);
-        if(!SelectionSpec.getInstance().onlyCaptureImage) this.addView(txt_tip);
+        this.addView(txt_tip);
+    }
 
+    private String getTipText(){
+        String imageTip = "轻触拍照";
+        String videoTip = "长按摄像";
+        if(SelectionSpec.getInstance().captureMode== CaptureMode.All){
+            return imageTip + "，" + videoTip;
+        }else if(SelectionSpec.getInstance().captureMode== CaptureMode.Image){
+            return imageTip;
+        } else {
+            return videoTip;
+        }
     }
 
     /**************************************************

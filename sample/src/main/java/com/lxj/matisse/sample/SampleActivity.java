@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.lxj.matisse.CaptureMode;
 import com.lxj.matisse.Matisse;
 import com.lxj.matisse.MimeType;
 import com.lxj.matisse.engine.impl.GlideEngine;
@@ -113,7 +114,9 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.jumpCapture:
                 Matisse.from(SampleActivity.this)
-                        .jumpCapture()//直接跳拍摄，如果只想拍摄图片不拍视频，则使用jumpCapture(true)
+                        .jumpCapture()//直接跳拍摄，默认可以同时拍摄照片和视频
+//                        .jumpCapture(CaptureMode.Image)//只拍照片
+//                        .jumpCapture(CaptureMode.Video)//只拍视频
                         .isCrop(true) //开启裁剪
                         .forResult(REQUEST_CODE_CHOOSE);
                 break;

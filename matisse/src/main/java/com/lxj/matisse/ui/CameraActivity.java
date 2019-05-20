@@ -22,6 +22,7 @@ import com.cjt2325.cameralibrary.listener.ClickListener;
 import com.cjt2325.cameralibrary.listener.ErrorListener;
 import com.cjt2325.cameralibrary.listener.JCameraListener;
 import com.cjt2325.cameralibrary.util.FileUtil;
+import com.lxj.matisse.CaptureMode;
 import com.lxj.matisse.MatisseConst;
 import com.lxj.matisse.R;
 import com.lxj.matisse.internal.entity.SelectionSpec;
@@ -44,10 +45,20 @@ public class CameraActivity extends AppCompatActivity {
         getPermission();
     }
 
+    private int getFeature(){
+        if(SelectionSpec.getInstance().captureMode== CaptureMode.All){
+            return JCameraView.BUTTON_STATE_BOTH;
+        }else if(SelectionSpec.getInstance().captureMode== CaptureMode.Image){
+            return JCameraView.BUTTON_STATE_ONLY_CAPTURE;
+        }else {
+            return JCameraView.BUTTON_STATE_ONLY_RECORDER;
+        }
+    }
+
     private void init(){
         //设置视频保存路径
         jCameraView.setSaveVideoPath(getCacheDir() + File.separator + "matisse");
-        jCameraView.setFeatures(JCameraView.BUTTON_STATE_BOTH);
+        jCameraView.setFeatures(getFeature());
         jCameraView.setMediaQuality(JCameraView.MEDIA_QUALITY_MIDDLE);
         jCameraView.setErrorLisenter(new ErrorListener() {
             @Override

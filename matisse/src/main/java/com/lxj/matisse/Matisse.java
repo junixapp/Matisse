@@ -167,18 +167,18 @@ public final class Matisse {
 
     /**
      * 直接跳转拍摄界面
-     * @param onlyCaptureImage 是否只拍图片，不拍摄视频，默认是false
+     * @param captureMode 根据mode来选择是只拍视频，还是只拍照片，默认是两种都拍
      * @return
      */
-    public SelectionCreator jumpCapture(boolean onlyCaptureImage){
+    public SelectionCreator jumpCapture(CaptureMode captureMode){
         SelectionCreator creator = new SelectionCreator(this);
         creator.isJumpCapture = true;
-        creator.mSelectionSpec.onlyCaptureImage = onlyCaptureImage;
+        creator.mSelectionSpec.captureMode = captureMode;
         return creator;
     }
 
     public SelectionCreator jumpCapture(){
-        return jumpCapture(false);
+        return jumpCapture(CaptureMode.All);
     }
 
     @Nullable

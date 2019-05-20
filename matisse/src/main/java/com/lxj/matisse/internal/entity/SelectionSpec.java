@@ -19,6 +19,7 @@ package com.lxj.matisse.internal.entity;
 import android.content.pm.ActivityInfo;
 import android.support.annotation.StyleRes;
 
+import com.lxj.matisse.CaptureMode;
 import com.lxj.matisse.MimeType;
 import com.lxj.matisse.R;
 import com.lxj.matisse.engine.ImageEngine;
@@ -56,7 +57,7 @@ public final class SelectionSpec {
     public int originalMaxSize = Integer.MAX_VALUE;
     public OnCheckedListener onCheckedListener;
     public boolean isCrop;//是否进行裁剪
-    public boolean onlyCaptureImage = false;//是否只拍图片，不拍视频
+    public CaptureMode captureMode = CaptureMode.All;//默认可以
 
     private SelectionSpec() {
     }
@@ -93,7 +94,7 @@ public final class SelectionSpec {
         autoHideToobar = true;
         originalMaxSize = Integer.MAX_VALUE;
         isCrop = false;
-        onlyCaptureImage = false;
+        captureMode =  CaptureMode.All;
     }
 
     public boolean singleSelectionModeEnabled() {
