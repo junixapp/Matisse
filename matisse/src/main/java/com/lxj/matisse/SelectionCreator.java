@@ -164,7 +164,7 @@ public final class SelectionCreator {
         if (mSelectionSpec.maxImageSelectable > 0 || mSelectionSpec.maxVideoSelectable > 0)
             throw new IllegalStateException("already set maxImageSelectable and maxVideoSelectable");
         mSelectionSpec.maxSelectable = maxSelectable;
-        countable(maxSelectable>1);
+        countable(maxSelectable > 1);
         return this;
     }
 
@@ -365,9 +365,18 @@ public final class SelectionCreator {
         if (activity == null) {
             return;
         }
+
         //自动进行权限检查
-        XPermission.create(activity, PermissionConstants.STORAGE)
-                .callback(new XPermission.SimpleCallback (){
+        XPermission xPermission;
+        if (!isJumpCapture) {
+            //相册功能所需权限
+            xPermission = XPermission.create(activity, PermissionConstants.STORAGE);
+        } else {
+            //录制所需权限
+            xPermission = XPermission.create(activity, PermissionConstants.STORAGE, PermissionConstants.CAMERA,
+                    PermissionConstants.MICROPHONE);
+        }
+        xPermission.callback(new XPermission.SimpleCallback() {
                     @Override
                     public void onGranted() {
                         Intent intent = new Intent(activity, isJumpCapture ? CameraActivity.class : MatisseActivity.class);
@@ -380,9 +389,11 @@ public final class SelectionCreator {
                     }
                     @Override
                     public void onDenied() {
-                        Toast.makeText(activity, "没有权限，无法使用相册功能", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "没有权限，无法使用该功能", Toast.LENGTH_SHORT).show();
                     }
                 }).request();
+
+
     }
 
     /**

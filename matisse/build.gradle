@@ -30,14 +30,14 @@ dependencies {
     implementation ('com.github.yalantis:ucrop:2.2.2'){
         exclude group: 'com.android.support'
     }
-    implementation 'com.lxj:xpermission:0.0.3'
+    implementation 'com.lxj:xpermission:1.0.0'
 }
 
 publish {
     userOrg = 'li-xiaojun'
     groupId = 'com.lxj'
     artifactId = 'matisse'
-    publishVersion = '1.0.2'
+    publishVersion = '1.0.3'
     repoName = 'jrepo'
     desc = '图片，视频选择和裁剪库，知乎Matisse的增强版。'
     website = 'https://github.com/li-xiaojun/Matisse'

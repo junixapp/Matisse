@@ -1,22 +1,16 @@
 package com.lxj.matisse.ui;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
-
 import com.cjt2325.cameralibrary.JCameraView;
 import com.cjt2325.cameralibrary.listener.ClickListener;
 import com.cjt2325.cameralibrary.listener.ErrorListener;
@@ -27,7 +21,6 @@ import com.lxj.matisse.MatisseConst;
 import com.lxj.matisse.R;
 import com.lxj.matisse.internal.entity.SelectionSpec;
 import com.yalantis.ucrop.UCrop;
-
 import java.io.File;
 
 public class CameraActivity extends AppCompatActivity {
@@ -42,7 +35,6 @@ public class CameraActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_camera);
         jCameraView = findViewById(R.id.jcameraview);
-        getPermission();
     }
 
     private int getFeature(){
@@ -112,14 +104,6 @@ public class CameraActivity extends AppCompatActivity {
                 CameraActivity.this.finish();
             }
         });
-//        jCameraView.setRightClickListener(new ClickListener() {
-//            @Override
-//            public void onClick() {
-//                Toast.makeText(CameraActivity.this,"Right",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-//        Log.i("CJT", DeviceUtil.getDeviceModel());
     }
 
     @Override
@@ -159,59 +143,6 @@ public class CameraActivity extends AppCompatActivity {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_FULLSCREEN;
             decorView.setSystemUiVisibility(option);
-        }
-    }
-
-    private void getPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager
-                    .PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager
-                            .PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager
-                            .PERMISSION_GRANTED) {
-                init();
-            } else {
-                //不具有获取权限，需要进行权限申请
-                ActivityCompat.requestPermissions(this, new String[]{
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.CAMERA}, MatisseConst.REQUEST_CAPTURE_PERMISSION);
-            }
-        } else {
-            init();
-        }
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MatisseConst.REQUEST_CAPTURE_PERMISSION) {
-            int size = 0;
-            if (grantResults.length >= 1) {
-                int writeResult = grantResults[0];
-                //读写内存权限
-                boolean writeGranted = writeResult == PackageManager.PERMISSION_GRANTED;//读写内存权限
-                if (!writeGranted) {
-                    size++;
-                }
-                //录音权限
-                int recordPermissionResult = grantResults[1];
-                boolean recordPermissionGranted = recordPermissionResult == PackageManager.PERMISSION_GRANTED;
-                if (!recordPermissionGranted) {
-                    size++;
-                }
-                //相机权限
-                int cameraPermissionResult = grantResults[2];
-                boolean cameraPermissionGranted = cameraPermissionResult == PackageManager.PERMISSION_GRANTED;
-                if (!cameraPermissionGranted) {
-                    size++;
-                }
-                if (size == 0) {
-                    recreate();
-                } else {
-                    finish();
-                }
-            }
         }
     }
     @Override
