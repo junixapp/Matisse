@@ -164,6 +164,7 @@ public final class SelectionCreator {
         if (mSelectionSpec.maxImageSelectable > 0 || mSelectionSpec.maxVideoSelectable > 0)
             throw new IllegalStateException("already set maxImageSelectable and maxVideoSelectable");
         mSelectionSpec.maxSelectable = maxSelectable;
+        countable(maxSelectable>1);
         return this;
     }
 
@@ -253,7 +254,7 @@ public final class SelectionCreator {
      * @param captureStrategy {@link CaptureStrategy}, needed only when capturing is enabled.
      * @return {@link SelectionCreator} for fluent API.
      */
-    public SelectionCreator captureStrategy(CaptureStrategy captureStrategy) {
+    private SelectionCreator captureStrategy(CaptureStrategy captureStrategy) {
         mSelectionSpec.captureStrategy = captureStrategy;
         return this;
     }

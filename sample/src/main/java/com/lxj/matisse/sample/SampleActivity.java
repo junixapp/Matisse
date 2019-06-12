@@ -16,10 +16,8 @@
 package com.lxj.matisse.sample;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,16 +30,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.lxj.matisse.CaptureMode;
 import com.lxj.matisse.Matisse;
 import com.lxj.matisse.MimeType;
-import com.lxj.matisse.engine.impl.GlideEngine;
 import com.lxj.matisse.engine.impl.PicassoEngine;
 import com.lxj.matisse.filter.Filter;
-import com.lxj.matisse.internal.entity.CaptureStrategy;
-import com.lxj.matisse.listener.OnCheckedListener;
-import com.lxj.matisse.listener.OnSelectedListener;
-
 import java.io.File;
 import java.util.List;
 
@@ -97,18 +89,16 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
 //                        })
 //                        .imageEngine(new GlideEngine()) // 默认是Glide4.x版本的加载器，如果你用的是Glide4.x，则无需设置
                         //.imageEngine(new PicassoEngine())//如果你用的是Picasso
-                        .imageEngine(new Glide3Engine())//如果你用的是Glide3.x版本，Glide3Engine这个类在demo中
+//                        .imageEngine(new Glide3Engine())//如果你用的是Glide3.x版本，Glide3Engine这个类在demo中
                         .forResult(REQUEST_CODE_CHOOSE); //请求码
                 break;
             case R.id.dracula:
                 Matisse.from(SampleActivity.this)
                         .choose(MimeType.ofImage())
                         .theme(R.style.Matisse_Dracula)
-                        .countable(false)
                         .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-                        .maxSelectable(9)
                         .originalEnable(true)
-                        .imageEngine(new PicassoEngine())
+                        .maxSelectable(1)
                         .isCrop(true)
                         .forResult(REQUEST_CODE_CHOOSE);
                 break;

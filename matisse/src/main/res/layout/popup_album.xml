@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardBackgroundColor="?attr/album.popup.bg"
-    android:layout_width="210dp"
-    android:layout_marginLeft="2dp"
-    android:layout_height="wrap_content">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popupContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@id/bottom_toolbar"
+    android:layout_below="@id/toolbar">
 
-    <ListView
-        android:id="@+id/listView"
-        android:divider="?attr/album.dropdown.divider"
-        android:dividerHeight="1px"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</android.support.v7.widget.CardView>
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:background="?attr/album.popup.bg">
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="?attr/album.dropdown.divider"
+            android:dividerHeight="1px" />
+    </android.support.design.widget.AppBarLayout>
+</FrameLayout>

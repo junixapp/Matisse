@@ -24,7 +24,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.lxj.matisse.sample.SampleActivity"
-            android:resizeableActivity="true"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

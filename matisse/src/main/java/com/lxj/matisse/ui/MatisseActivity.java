@@ -58,9 +58,7 @@ import com.lxj.matisse.internal.ui.widget.IncapableDialog;
 import com.lxj.matisse.internal.utils.MediaStoreCompat;
 import com.lxj.matisse.internal.utils.PathUtils;
 import com.lxj.matisse.internal.utils.PhotoMetadataUtils;
-import com.lxj.xpopup.XPopup;
 import com.yalantis.ucrop.UCrop;
-
 import java.io.File;
 import java.util.ArrayList;
 
@@ -147,14 +145,10 @@ public class MatisseActivity extends AppCompatActivity implements
         updateBottomToolbar();
 
         mAlbumsAdapter = new AlbumsAdapter(this, null, false);
-        albumPopup = (AlbumPopup) new XPopup.Builder(this).hasShadowBg(false).atView(toolbar)
-                        .asCustom(new AlbumPopup(this));
-        albumPopup.setAdapter(mAlbumsAdapter)
-                .setOnItemClickListener(this);
+        albumPopup = new AlbumPopup(this,mAlbumsAdapter,this);
         mAlbumCollection.onCreate(this, this);
         mAlbumCollection.onRestoreInstanceState(savedInstanceState);
         mAlbumCollection.loadAlbums();
-        XPopup.setAnimationDuration(200);
     }
 
     @Override
@@ -388,7 +382,7 @@ public class MatisseActivity extends AppCompatActivity implements
                 }
                 onAlbumSelected(album);
             }
-        }, XPopup.getAnimationDuration() - 50);
+        }, 200);
     }
 
     @Override

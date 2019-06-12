@@ -13,10 +13,6 @@ android {
     lintOptions {
         abortOnError false
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
-    }
 }
 
 ext.supportLibVersion = '26.0.0'
@@ -24,11 +20,10 @@ ext.supportLibVersion = '26.0.0'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':matisse')
-//    implementation 'com.lxj:matisse:0.0.3'
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
     implementation "com.android.support:design:${supportLibVersion}"
-    implementation ('com.github.bumptech.glide:glide:3.7.0'){
+    implementation ('com.github.bumptech.glide:glide:4.8.0'){
         exclude group: 'com.android.support'
     }
     implementation 'com.squareup.picasso:picasso:2.5.2'

@@ -35,7 +35,7 @@ public final class SelectionSpec {
 
     public Set<MimeType> mimeTypeSet;
     public boolean mediaTypeExclusive;
-    public boolean showSingleMediaType;
+    public boolean showSingleMediaType = true;
     @StyleRes
     public int themeId;
     public int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
@@ -75,7 +75,7 @@ public final class SelectionSpec {
     private void reset() {
         mimeTypeSet = null;
         mediaTypeExclusive = true;
-        showSingleMediaType = false;
+        showSingleMediaType = true;
         themeId = R.style.Matisse_Zhihu;
         orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         countable = true;

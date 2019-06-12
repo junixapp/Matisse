@@ -23,10 +23,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
+    implementation "com.android.support:design:${supportLibVersion}"
     implementation 'it.sephiroth.android.library.imagezoom:library:1.0.4'
     compileOnly 'com.github.bumptech.glide:glide:4.8.0'
     compileOnly 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'com.lxj:xpopup:1.6.1'
     implementation ('com.github.yalantis:ucrop:2.2.2'){
         exclude group: 'com.android.support'
     }
@@ -37,7 +37,7 @@ publish {
     userOrg = 'li-xiaojun'
     groupId = 'com.lxj'
     artifactId = 'matisse'
-    publishVersion = '1.0.1'
+    publishVersion = '1.0.2'
     repoName = 'jrepo'
     desc = '图片，视频选择和裁剪库，知乎Matisse的增强版。'
     website = 'https://github.com/li-xiaojun/Matisse'
