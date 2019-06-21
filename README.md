@@ -91,7 +91,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //获取裁剪结果的路径，不管是选择照片裁剪还是拍摄照片裁剪，结果都从这里取
         String cropPath = Matisse.obtainCropResult(data);
 
-        //获取选择图片或者视频的结果路径，不开启裁剪的情况下
+        //获取选择图片或者视频的结果路径，如果开启裁剪的话，获取的是原图的地址
         Matisse.obtainSelectUriResult(data);//uri形式的路径
         Matisse.obtainSelectPathResult(data)//文件形式路径
     }
