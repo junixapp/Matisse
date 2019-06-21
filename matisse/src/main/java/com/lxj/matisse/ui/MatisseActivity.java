@@ -182,6 +182,8 @@ public class MatisseActivity extends AppCompatActivity implements
         super.onBackPressed();
     }
 
+    ArrayList<Uri> selectedUris = new ArrayList<>();
+    ArrayList<String> selectedPaths = new ArrayList<>();
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -195,15 +197,9 @@ public class MatisseActivity extends AppCompatActivity implements
             int collectionType = resultBundle.getInt(SelectedItemCollection.STATE_COLLECTION_TYPE,
                     SelectedItemCollection.COLLECTION_UNDEFINED);
             if (data.getBooleanExtra(BasePreviewActivity.EXTRA_RESULT_APPLY, false)) {
-                if(mSpec.isCrop && selected.size()==1 && selected.get(0).isImage()){
-                    //start crop
-                    startCrop(this, selected.get(0).uri);
-                    return;
-                }
-
                 Intent result = new Intent();
-                ArrayList<Uri> selectedUris = new ArrayList<>();
-                ArrayList<String> selectedPaths = new ArrayList<>();
+                selectedUris.clear();
+                selectedPaths.clear();
                 if (selected != null) {
                     for (Item item : selected) {
                         selectedUris.add(item.getContentUri());
@@ -213,6 +209,11 @@ public class MatisseActivity extends AppCompatActivity implements
                 result.putParcelableArrayListExtra(MatisseConst.EXTRA_RESULT_SELECTION, selectedUris);
                 result.putStringArrayListExtra(MatisseConst.EXTRA_RESULT_SELECTION_PATH, selectedPaths);
                 result.putExtra(MatisseConst.EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
+                if(mSpec.isCrop && selected!=null && selected.size()==1 && selected.get(0).isImage()){
+                    //开启裁剪
+                    startCrop(this, selected.get(0).uri);
+                    return;
+                }
                 setResult(RESULT_OK, result);
                 finish();
             } else {
@@ -232,8 +233,12 @@ public class MatisseActivity extends AppCompatActivity implements
             final Uri resultUri = UCrop.getOutput(data);
             if (resultUri != null) {
                 //finish with result.
-                Intent result = new Intent();
+                Intent result = getIntent();
                 result.putExtra(MatisseConst.EXTRA_RESULT_CROP_PATH, resultUri.getPath());
+                ArrayList<Uri> selectedUris = (ArrayList<Uri>) mSelectedCollection.asListOfUri();
+                result.putParcelableArrayListExtra(MatisseConst.EXTRA_RESULT_SELECTION, selectedUris);
+                ArrayList<String> selectedPaths = (ArrayList<String>) mSelectedCollection.asListOfString();
+                result.putStringArrayListExtra(MatisseConst.EXTRA_RESULT_SELECTION_PATH, selectedPaths);
                 setResult(RESULT_OK, result);
                 finish();
             } else {

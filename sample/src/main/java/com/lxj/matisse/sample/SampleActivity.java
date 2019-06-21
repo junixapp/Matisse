@@ -132,7 +132,9 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                 captureText.setText("拍照路径："+capturePath);
             }else if((cropPath = Matisse.obtainCropResult(data))!=null){
                 captureText.setVisibility(View.VISIBLE);
-                captureText.setText("裁剪的路径："+cropPath);
+                String s = "裁剪的路径："+cropPath;
+                s += "\n 原图路径：" + Matisse.obtainSelectPathResult(data).get(0);
+                captureText.setText(s);
             }else {
                 mAdapter.setData(Matisse.obtainSelectUriResult(data), Matisse.obtainSelectPathResult(data));
                 Log.e("OnActivityResult", "originalState: "+String.valueOf(Matisse.obtainOriginalState(data)));
