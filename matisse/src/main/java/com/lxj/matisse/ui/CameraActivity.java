@@ -35,6 +35,7 @@ public class CameraActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_camera);
         jCameraView = findViewById(R.id.jcameraview);
+        init();
     }
 
     private int getFeature(){
