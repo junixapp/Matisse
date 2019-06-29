@@ -15,6 +15,7 @@
  */
 package com.lxj.matisse.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -38,7 +39,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.lxj.matisse.CaptureMode;
 import com.lxj.matisse.MatisseConst;
 import com.lxj.matisse.R;
 import com.lxj.matisse.internal.entity.Album;
@@ -58,7 +61,10 @@ import com.lxj.matisse.internal.ui.widget.IncapableDialog;
 import com.lxj.matisse.internal.utils.MediaStoreCompat;
 import com.lxj.matisse.internal.utils.PathUtils;
 import com.lxj.matisse.internal.utils.PhotoMetadataUtils;
+import com.lxj.xpermission.PermissionConstants;
+import com.lxj.xpermission.XPermission;
 import com.yalantis.ucrop.UCrop;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -145,7 +151,7 @@ public class MatisseActivity extends AppCompatActivity implements
         updateBottomToolbar();
 
         mAlbumsAdapter = new AlbumsAdapter(this, null, false);
-        albumPopup = new AlbumPopup(this,mAlbumsAdapter,this);
+        albumPopup = new AlbumPopup(this, mAlbumsAdapter, this);
         mAlbumCollection.onCreate(this, this);
         mAlbumCollection.onRestoreInstanceState(savedInstanceState);
         mAlbumCollection.loadAlbums();
@@ -184,6 +190,7 @@ public class MatisseActivity extends AppCompatActivity implements
 
     ArrayList<Uri> selectedUris = new ArrayList<>();
     ArrayList<String> selectedPaths = new ArrayList<>();
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -209,7 +216,7 @@ public class MatisseActivity extends AppCompatActivity implements
                 result.putParcelableArrayListExtra(MatisseConst.EXTRA_RESULT_SELECTION, selectedUris);
                 result.putStringArrayListExtra(MatisseConst.EXTRA_RESULT_SELECTION_PATH, selectedPaths);
                 result.putExtra(MatisseConst.EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
-                if(mSpec.isCrop && selected!=null && selected.size()==1 && selected.get(0).isImage()){
+                if (mSpec.isCrop && selected != null && selected.size() == 1 && selected.get(0).isImage()) {
                     //开启裁剪
                     startCrop(this, selected.get(0).uri);
                     return;
@@ -229,7 +236,7 @@ public class MatisseActivity extends AppCompatActivity implements
             // Just pass the data back to previous calling Activity.
             setResult(RESULT_OK, data);
             finish();
-        }else if (requestCode == UCrop.REQUEST_CROP) {
+        } else if (requestCode == UCrop.REQUEST_CROP) {
             final Uri resultUri = UCrop.getOutput(data);
             if (resultUri != null) {
                 //finish with result.
@@ -242,10 +249,10 @@ public class MatisseActivity extends AppCompatActivity implements
                 setResult(RESULT_OK, result);
                 finish();
             } else {
-                Log.e("Matisse", "ucrop occur error: "+UCrop.getError(data).toString());
+                Log.e("Matisse", "ucrop occur error: " + UCrop.getError(data).toString());
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
-            Log.e("Matisse", "ucrop occur error: "+UCrop.getError(data).toString());
+            Log.e("Matisse", "ucrop occur error: " + UCrop.getError(data).toString());
         }
     }
 
@@ -324,10 +331,10 @@ public class MatisseActivity extends AppCompatActivity implements
             ArrayList<String> selectedPaths = (ArrayList<String>) mSelectedCollection.asListOfString();
             result.putStringArrayListExtra(MatisseConst.EXTRA_RESULT_SELECTION_PATH, selectedPaths);
             result.putExtra(MatisseConst.EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
-            if(mSpec.isCrop && selectedPaths.size()==1 && mSelectedCollection.asList().get(0).isImage()){
+            if (mSpec.isCrop && selectedPaths.size() == 1 && mSelectedCollection.asList().get(0).isImage()) {
                 //start crop
                 startCrop(this, selectedUris.get(0));
-            }else {
+            } else {
                 setResult(RESULT_OK, result);
                 finish();
             }
@@ -353,8 +360,8 @@ public class MatisseActivity extends AppCompatActivity implements
         }
     }
 
-    public static void startCrop(Activity context,Uri source){
-        String destinationFileName = System.nanoTime()+"_crop.jpg";
+    public static void startCrop(Activity context, Uri source) {
+        String destinationFileName = System.nanoTime() + "_crop.jpg";
         UCrop.Options options = new UCrop.Options();
         options.setCompressionQuality(90);
         // Color palette
@@ -372,6 +379,7 @@ public class MatisseActivity extends AppCompatActivity implements
                 .withOptions(options)
                 .start(context);
     }
+
     //相册条目点击
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -457,16 +465,30 @@ public class MatisseActivity extends AppCompatActivity implements
         return mSelectedCollection;
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void capture() {
 //        if (mMediaStoreCompat != null) {
 //            mMediaStoreCompat.dispatchCaptureIntent(this, REQUEST_CODE_CAPTURE);
 //        }
-        Intent intent = new Intent(this, CameraActivity.class);
-        startActivityForResult(intent, MatisseConst.REQUEST_CODE_CAPTURE);
-        
-    }
 
+
+        String[] permissions = mSpec.captureMode == CaptureMode.Image ? new String[]{PermissionConstants.CAMERA}
+                : new String[]{PermissionConstants.CAMERA, PermissionConstants.MICROPHONE};
+
+        XPermission.create(this, permissions).callback(new XPermission.SimpleCallback() {
+            @Override
+            public void onGranted() {
+                Intent intent = new Intent(MatisseActivity.this, CameraActivity.class);
+                startActivityForResult(intent, MatisseConst.REQUEST_CODE_CAPTURE);
+            }
+
+            @Override
+            public void onDenied() {
+                Toast.makeText(MatisseActivity.this, "没有权限，无法使用该功能", Toast.LENGTH_SHORT).show();
+            }
+        }).request();
+    }
 
 
 }

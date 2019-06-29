@@ -57,7 +57,7 @@ public final class SelectionSpec {
     public int originalMaxSize = Integer.MAX_VALUE;
     public OnCheckedListener onCheckedListener;
     public boolean isCrop;//是否进行裁剪
-    public CaptureMode captureMode = CaptureMode.All;//默认可以
+    public CaptureMode captureMode = CaptureMode.Image;//默认可以
 
     private SelectionSpec() {
     }
@@ -94,7 +94,7 @@ public final class SelectionSpec {
         autoHideToobar = true;
         originalMaxSize = Integer.MAX_VALUE;
         isCrop = false;
-        captureMode =  CaptureMode.All;
+        captureMode =  CaptureMode.Image;
     }
 
     public boolean singleSelectionModeEnabled() {

@@ -45,7 +45,8 @@ Matisse.from(SampleActivity.this)
 ```java
 Matisse.from(SampleActivity.this)
     .choose(MimeType.ofAll())
-    .capture(true)
+    .capture(true) //默认只能拍照片
+    //.capture(true, CaptureMode.All)//通过CaptureMode控制拍照照片还是视频，或者都拍
     .maxSelectable(9) //默认最大选中9张，设置为1就是单选
     .theme(R.style.Matisse_Dracula)//暗色主题
     //添加图片过滤器，比如过滤掉小于10K的图片

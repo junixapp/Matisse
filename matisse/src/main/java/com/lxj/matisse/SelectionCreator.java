@@ -16,6 +16,7 @@
  */
 package com.lxj.matisse;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
@@ -210,6 +211,13 @@ public final class SelectionCreator {
      */
     public SelectionCreator capture(boolean enable) {
         mSelectionSpec.capture = enable;
+        mSelectionSpec.captureMode = CaptureMode.Image;
+        return this;
+    }
+
+    public SelectionCreator capture(boolean enable, CaptureMode captureMode) {
+        mSelectionSpec.capture = enable;
+        mSelectionSpec.captureMode = captureMode;
         return this;
     }
 
@@ -360,6 +368,7 @@ public final class SelectionCreator {
      *
      * @param requestCode Identity of the request Activity or Fragment.
      */
+    @SuppressLint("WrongConstant")
     public void forResult(final int requestCode) {
         final Activity activity = mMatisse.getActivity();
         if (activity == null) {
@@ -373,8 +382,10 @@ public final class SelectionCreator {
             xPermission = XPermission.create(activity, PermissionConstants.STORAGE);
         } else {
             //录制所需权限
-            xPermission = XPermission.create(activity, PermissionConstants.STORAGE, PermissionConstants.CAMERA,
-                    PermissionConstants.MICROPHONE);
+            String[] permissions = mSelectionSpec.captureMode == CaptureMode.Image ? new String[]{PermissionConstants.CAMERA}
+                    : new String[]{PermissionConstants.CAMERA, PermissionConstants.MICROPHONE};
+
+            xPermission = XPermission.create(activity, permissions);
         }
         xPermission.callback(new XPermission.SimpleCallback() {
                     @Override

@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.lxj.matisse.CaptureMode;
 import com.lxj.matisse.Matisse;
 import com.lxj.matisse.MimeType;
 import com.lxj.matisse.engine.impl.PicassoEngine;
@@ -64,7 +65,8 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.zhihu:
                 Matisse.from(SampleActivity.this)
                         .choose(MimeType.ofAll()) //显示所有文件类型，比如图片和视频，
-                        .capture(true)//是否显示拍摄按钮，默认不显示
+//                        .capture(true)//是否显示拍摄按钮，默认不显示
+                        .capture(true, CaptureMode.All)//是否显示拍摄按钮，默认不显示
 //                        .maxSelectable(9) //默认9张
                         //添加图片过滤器，比如过滤掉小于10K的图片
 //                        .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
