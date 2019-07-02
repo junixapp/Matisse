@@ -27,6 +27,7 @@ implementation 'com.lxj:matisse:最新版本'
 Matisse.from(SampleActivity.this)
     .choose(MimeType.ofAll()) //显示所有文件类型，比如图片和视频，
     .capture(true)//是否显示拍摄按钮，默认不显示
+    //.capture(true, CaptureMode.All)//是否显示拍摄按钮，可以同时拍视频和图片
     .isCrop(true)//开启裁剪，默认不开启
     //.imageEngine(new GlideEngine()) //默认是Glide4.x版本的加载器，如果你用的是Glide4.x，则无需设置
     //.imageEngine(new Glide3Engine())//如果你用的是Glide3.x版本，请打开这个，Glide3Engine这个类在demo中
