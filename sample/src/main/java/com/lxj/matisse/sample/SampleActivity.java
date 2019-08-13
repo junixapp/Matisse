@@ -101,7 +101,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                         .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
                         .originalEnable(true)
                         .maxSelectable(1)
-                        .isCrop(true)
+                        .isCrop(false)
                         .forResult(REQUEST_CODE_CHOOSE);
                 break;
             case R.id.jumpCapture:
